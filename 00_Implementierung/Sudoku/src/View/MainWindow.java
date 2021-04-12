@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class MainWindow {
 
@@ -90,7 +92,20 @@ public class MainWindow {
 		comboBox_neu = new JComboBox();
 		comboBox_neu.setBounds(340, 109, 135, 22);
 		frame.getContentPane().add(comboBox_neu);
+		
+		JLabel lblNewLabel = new JLabel("Sudoku Hauptmen\u00FC");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setBounds(170, 30, 181, 34);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JButton btnNewButton_3 = new JButton("Sudoku erstellen");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CreateSudokuWindow csw = new CreateSudokuWindow();
+				csw.setVisible(true);				
+			}
+		});
+		btnNewButton_3.setBounds(74, 280, 111, 23);
+		frame.getContentPane().add(btnNewButton_3);
 	}
-	
-	
 }
