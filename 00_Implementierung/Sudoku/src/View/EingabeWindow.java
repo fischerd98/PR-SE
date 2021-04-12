@@ -38,7 +38,7 @@ public class EingabeWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public EingabeWindow(String pos, SudokuWindow sw) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 449);
 		
 		this.sw = sw;
@@ -53,7 +53,7 @@ public class EingabeWindow extends JFrame {
 	}
 	
 	public EingabeWindow(String pos, CreateSudokuWindow csw) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 449);
 		
 		this.csw = csw;

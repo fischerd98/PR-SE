@@ -3,14 +3,24 @@ package View;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
+import Model.Model;
+import Model.SudokuListItems;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class MainWindow {
 
 	private JFrame frame;
-
+	private Model model;
+	
+	private JComboBox comboBox_weiterspielen;
+	private JComboBox comboBox_neu;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -31,6 +41,9 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
+		
+		this.model = new Model();
+		
 		initialize();
 	}
 
@@ -43,14 +56,41 @@ public class MainWindow {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("Sudoku weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow();
+				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
 				w.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(102, 176, 89, 23);
+		btnNewButton.setBounds(195, 75, 135, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Zuf\u00E4lliges Sudoku");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
+				w.setVisible(true);
+			}
+		});
+		btnNewButton_1.setBounds(50, 109, 135, 23);
+		frame.getContentPane().add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Sudoku ausw\u00E4hlen");
+		btnNewButton_2.setBounds(340, 75, 135, 23);
+		frame.getContentPane().add(btnNewButton_2);
+		
+		comboBox_weiterspielen = new JComboBox();
+		comboBox_weiterspielen.setBounds(195, 109, 135, 22);
+		for(SudokuListItems s : model.loadSimpleSudokus()) {
+			comboBox_weiterspielen.addItem(s);
+		}		
+		frame.getContentPane().add(comboBox_weiterspielen);
+		
+		comboBox_neu = new JComboBox();
+		comboBox_neu.setBounds(340, 109, 135, 22);
+		frame.getContentPane().add(comboBox_neu);
 	}
+	
+	
 }

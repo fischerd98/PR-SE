@@ -4,15 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Closeable;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Model.SimpleSudoku;
+import Model.SudokuListItems;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class SudokuWindow extends JFrame {
 
@@ -23,7 +28,9 @@ public class SudokuWindow extends JFrame {
 	
 	private JLabel lblState;
 
-	private SimpleSudoku ss = new SimpleSudoku();
+	private SimpleSudoku ss;
+	
+	private boolean continueGame = false;
 
 	/**
 	 * Launch the application.
@@ -32,7 +39,7 @@ public class SudokuWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SudokuWindow frame = new SudokuWindow();
+					SudokuWindow frame = new SudokuWindow(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,13 +47,59 @@ public class SudokuWindow extends JFrame {
 			}
 		});
 	}
+	
+//	public SudokuWindow(SudokuListItems sudokuitem) {
+//		ss = new SimpleSudoku(sudokuitem);
+//		continueGame = true;
+//		
+//		SudokuWindow();
+//	}
 
 	/**
 	 * Create the frame.
 	 */
-	public SudokuWindow() {
+	public SudokuWindow(SudokuListItems sudokuitems) {
+		
+		if(sudokuitems == null) {
+			ss = new SimpleSudoku();
+		} else {
+			ss = new SimpleSudoku(sudokuitems);
+			continueGame = true;
+		}
+		
+//		if(!continueGame) {
+//			ss = new SimpleSudoku();
+//		}
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 671, 728);
+		
+		setResizable(false);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("Men\u00FC");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Spielstand Speichern");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ss.saveSudoku();
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem);
+		
+		JMenuItem mntmNewMenuItem2 = new JMenuItem("Zurück zum Hauptmenü");
+		mntmNewMenuItem2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+				dispose();
+				
+			}
+		});
+		mnNewMenu.add(mntmNewMenuItem2);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

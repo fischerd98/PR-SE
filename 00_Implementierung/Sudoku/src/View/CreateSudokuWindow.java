@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Model.SimpleSudoku;
+import javax.swing.JTextField;
+
 
 public class CreateSudokuWindow extends JFrame {
 
@@ -26,6 +28,7 @@ public class CreateSudokuWindow extends JFrame {
 
 	private SimpleSudoku ss = new SimpleSudoku(new int[9][9]);
 	private JLabel lblNewLabel;
+	private JTextField textField_Sudokuname;
 
 	/**
 	 * Launch the application.
@@ -59,18 +62,20 @@ public class CreateSudokuWindow extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-//		lblState = new JLabel("Zustand");
-//		lblState.setBounds(387, 632, 130, 14);
-//		contentPane.add(lblState);
-		
 		lblNewLabel = new JLabel("Sudoku erstellen");
 		lblNewLabel.setBounds(152, 27, 130, 14);
 		panel.add(lblNewLabel);
 		
+		textField_Sudokuname = new JTextField();
+		textField_Sudokuname.setBounds(323, 24, 120, 20);
+		panel.add(textField_Sudokuname);
+		textField_Sudokuname.setColumns(10);
+		
 		JButton btnCheckComplete = new JButton("Speichern");
 		btnCheckComplete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Speichern");				
+				System.out.println("Speichern");	
+				saveSudoku(textField_Sudokuname.getText());
 			}
 		});
 		btnCheckComplete.setBounds(265, 628, 122, 23);
@@ -138,12 +143,9 @@ public class CreateSudokuWindow extends JFrame {
 		}
 	}
 	
-//	public void checkComplete() { 
-//		boolean state = ss.checkComplete();
-//		
-//		if(state)
-//			lblState.setText("Fertig!");
-//		else
-//			lblState.setText("Weitermachen!");
-//	}
+	public void saveSudoku(String filename) {
+		
+		ss.saveSudoku(filename);
+		
+	}
 }
