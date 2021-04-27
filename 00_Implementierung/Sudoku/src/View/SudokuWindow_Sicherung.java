@@ -19,17 +19,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-public class SudokuWindow extends JFrame {
+public class SudokuWindow_Sicherung extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
 
 	private JButton[][] field;
-
+	
 	private JLabel lblState;
 
 	private SimpleSudoku ss;
-
+	
 	private boolean continueGame = false;
 
 	/**
@@ -39,7 +39,7 @@ public class SudokuWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SudokuWindow frame = new SudokuWindow(null);
+					SudokuWindow_Sicherung frame = new SudokuWindow_Sicherung(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class SudokuWindow extends JFrame {
 			}
 		});
 	}
-
+	
 //	public SudokuWindow(SudokuListItems sudokuitem) {
 //		ss = new SimpleSudoku(sudokuitem);
 //		continueGame = true;
@@ -58,30 +58,30 @@ public class SudokuWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SudokuWindow(SudokuListItems sudokuitems) {
-
-		if (sudokuitems == null) {
+	public SudokuWindow_Sicherung(SudokuListItems sudokuitems) {
+		
+		if(sudokuitems == null) {
 			ss = new SimpleSudoku();
 		} else {
 			ss = new SimpleSudoku(sudokuitems);
 			continueGame = true;
 		}
-
+		
 //		if(!continueGame) {
 //			ss = new SimpleSudoku();
 //		}
-
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1025, 728);
-
+		setBounds(100, 100, 671, 728);
+		
 		setResizable(false);
-
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-
+		
 		JMenu mnNewMenu = new JMenu("Men\u00FC");
 		menuBar.add(mnNewMenu);
-
+		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Spielstand Speichern");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -89,39 +89,39 @@ public class SudokuWindow extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
-
+		
 		JMenuItem mntmNewMenuItem2 = new JMenuItem("Zurück zum Hauptmenü");
 		mntmNewMenuItem2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+			
 				dispose();
-
+				
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem2);
-
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 504, 533);
+		panel.setBounds(27, 47, 504, 533);
 		contentPane.add(panel);
 		panel.setLayout(null);
-
+		
 		JButton btnCheckComplete = new JButton("Pr\u00FCfen");
 		btnCheckComplete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow.this.checkComplete();
-
+				SudokuWindow_Sicherung.this.checkComplete();
+				
 			}
 		});
-		btnCheckComplete.setBounds(265, 604, 89, 23);
+		btnCheckComplete.setBounds(265, 628, 89, 23);
 		contentPane.add(btnCheckComplete);
-
+		
 		lblState = new JLabel("Zustand");
-		lblState.setBounds(385, 608, 130, 14);
+		lblState.setBounds(387, 632, 130, 14);
 		contentPane.add(lblState);
 
 		field = new JButton[9][9];
@@ -131,7 +131,6 @@ public class SudokuWindow extends JFrame {
 //		contentPane.add(lblNewLabel);
 
 		initField();
-		initEingabeButtons();
 		fillField();
 	}
 
@@ -148,8 +147,8 @@ public class SudokuWindow extends JFrame {
 				JButton btn = new JButton();
 				btn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						// EingabeWindow ew = new EingabeWindow(btn.getName(), SudokuWindow.this);
-						// ew.setVisible(true);
+						EingabeWindow ew = new EingabeWindow(btn.getName(), SudokuWindow_Sicherung.this);
+						ew.setVisible(true);
 					}
 				});
 				btn.setName(i + ";" + y);
@@ -188,90 +187,36 @@ public class SudokuWindow extends JFrame {
 //		}
 	}
 
-	public void initEingabeButtons() {
-
-		int posX = 600;
-		int posY = 131;
-		int width = 43;
-
-		int count = 1;
-
-		for (int i = 0; i < 3; i++) {
-			for (int y = 0; y < 3; y++) {
-
-				// SudokuButton btn = new SudokuButton(i + "", i, y);
-				JButton btn = new JButton();
-				btn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-
-						setField(btn.getText());
-
-					}
-				});
-				btn.setText(count + "");
-				btn.setBounds(posX, posY, width, width);
-				btn.setVisible(true);
-				contentPane.add(btn);
-				posX += width;
-
-				count++;
-			}
-
-			posY += width;
-			posX = 600;
-		}
-	}
-
-	public void setField(String val) {
-
-		int num = Integer.parseInt(val);
-
-//		String[] arr = this.pos.split(";");
-//
-//		int posX = Integer.parseInt(arr[0]);
-//		int posY = Integer.parseInt(arr[1]);
-//
-//		if (sw != null) {
-//			sw.setField(posX, posY, num);
-//		} else if (csw != null) {
-//			csw.setField(posX, posY, num);
-//		}
-//
-//		this.dispose();
-	}
-	
-	
-
 	public void fillField() {
 
-		int start[][] = ss.getStart();
-
+		int start[][] = ss.getStart();		
+		
 		for (int i = 0; i < start.length; i++) {
-
+			
 			for (int y = 0; y < start[i].length; y++) {
-
+				
 				int val = start[i][y];
-
-				if (val != 0) {
+				
+				if(val != 0) {
 					field[i][y].setEnabled(false);
 				}
 				field[i][y].setText(val + "");
 			}
 		}
 	}
-
+	
 	public void setField(int posX, int posY, int num) {
-
-		if (ss.checkVal(posX, posY, num)) {
+		
+		if(ss.checkVal(posX, posY, num)) {
 			ss.setField(posX, posY, num);
 			field[posX][posY].setText(num + "");
 		}
 	}
-
+	
 	public void checkComplete() {
 		boolean state = ss.checkComplete();
-
-		if (state)
+		
+		if(state)
 			lblState.setText("Fertig!");
 		else
 			lblState.setText("Weitermachen!");

@@ -71,14 +71,14 @@ public class SimpleSudoku extends Sudoku {
 
 		// Spalte
 		for (int i = 0; i < 9; i++) {
-			if (start[i][posX] == num) {
+			if (start[i][posY] == num) {
 				return false;
 			}
 		}
 
 		// Zeile
 		for (int i = 0; i < 9; i++) {
-			if (start[posY][i] == num) {
+			if (start[posX][i] == num) {
 				return false;
 			}
 		}
@@ -86,30 +86,26 @@ public class SimpleSudoku extends Sudoku {
 		int x;
 		int y;
 
-		// 9er Kasten
-		if (posX >= 0 && posX <= 2) {
-			x = 0;
-		} else if (posX >= 3 && posX <= 5) {
-			x = 1;
-		} else {
-			x = 2;
-		}
-
-		if (posY >= 0 && posY <= 2) {
-			y = 0;
-		} else if (posY >= 3 && posY <= 5) {
-			y = 1;
-		} else {
-			y = 2;
-		}
-
-		for (int i = x * 3; i < (x + 1) * 3; i++) {
-			for (int k = y * 3; k < (y + 1) * 3; k++) {
-				if (start[i][k] == num)
+		return check9SquareNumPossible(posX, posY, num);		
+	}
+	
+	public boolean check9SquareNumPossible(int posx, int posy, int val) {
+		
+		int startX = posx / 3;
+		startX *= 3;
+		int endX = startX + 3;
+		
+		int startY = posy / 3;
+		startY *= 3;
+		int endY = startY + 3;
+		
+		for(int i = startX; i<endX;i++) {
+			for(int y = startY; y < endY; y++) {
+				if(this.start[i][y] == val)
 					return false;
 			}
 		}
-
+		
 		return true;
 	}
 

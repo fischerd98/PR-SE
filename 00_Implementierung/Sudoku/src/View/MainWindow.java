@@ -61,7 +61,7 @@ public class MainWindow {
 		JButton btnNewButton = new JButton("Sudoku weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
+				SudokuWindow_Sicherung w = new SudokuWindow_Sicherung((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
 				w.setVisible(true);
 			}
 		});
@@ -71,7 +71,7 @@ public class MainWindow {
 		JButton btnNewButton_1 = new JButton("Zuf\u00E4lliges Sudoku");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
+				SudokuWindow_Sicherung w = new SudokuWindow_Sicherung((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
 				w.setVisible(true);
 			}
 		});
