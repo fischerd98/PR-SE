@@ -67,6 +67,10 @@ public class SimpleSudoku extends Sudoku {
 		start[posX][posY] = num;
 	}
 
+	public int getVal(int x, int y) {
+		return start[x][y];
+	}
+	
 	public boolean checkVal(int posX, int posY, int num) {
 
 		// Spalte
@@ -273,4 +277,6 @@ public class SimpleSudoku extends Sudoku {
 
 		return list;
 	}
+	
+	
 }

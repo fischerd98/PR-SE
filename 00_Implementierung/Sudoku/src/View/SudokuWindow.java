@@ -1,16 +1,19 @@
 package View;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Closeable;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Model.SimpleSudoku;
+import Model.SudokuHistoryItem;
 import Model.SudokuListItems;
 
 import javax.swing.JLabel;
@@ -25,13 +28,23 @@ public class SudokuWindow extends JFrame {
 	private JPanel panel;
 
 	private JButton[][] field;
+	private JButton[] inputButtons;
 
 	private JLabel lblState;
 
 	private SimpleSudoku ss;
 
 	private boolean continueGame = false;
+	
+	// ausgewähltes Feld
+	private int actX = -1;
+	private int actY = -1;
 
+	private Color actColor;
+	
+	ArrayList<SudokuHistoryItem> history = new ArrayList<>();
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -123,6 +136,31 @@ public class SudokuWindow extends JFrame {
 		lblState = new JLabel("Zustand");
 		lblState.setBounds(385, 608, 130, 14);
 		contentPane.add(lblState);
+		
+		JButton btn_deleteChoice = new JButton("Auwahl l\u00F6schen");
+		btn_deleteChoice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actX = -1;
+				actY = -1;
+				setBtnColors();
+				enableDisableInputButtons();
+			}
+		});
+		btn_deleteChoice.setBounds(265, 638, 165, 23);
+		contentPane.add(btn_deleteChoice);
+		
+		JButton btn_undo = new JButton("R\u00FCckg\u00E4ngig");
+		btn_undo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(history.size() >= 1) {
+					SudokuHistoryItem sh = history.remove(history.size()-1);
+					setFieldUndo(sh.getX(), sh.getY(), sh.getvBefore());
+				}	
+			}
+		});
+		btn_undo.setBounds(265, 573, 89, 23);
+		contentPane.add(btn_undo);
 
 		field = new JButton[9][9];
 
@@ -131,8 +169,9 @@ public class SudokuWindow extends JFrame {
 //		contentPane.add(lblNewLabel);
 
 		initField();
-		initEingabeButtons();
+		initInputButtons();
 		fillField();
+		enableDisableInputButtons();
 	}
 
 	public void initField() {
@@ -148,6 +187,9 @@ public class SudokuWindow extends JFrame {
 				JButton btn = new JButton();
 				btn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+
+						sudokuButtonClicked(btn.getName());
+
 						// EingabeWindow ew = new EingabeWindow(btn.getName(), SudokuWindow.this);
 						// ew.setVisible(true);
 					}
@@ -186,9 +228,32 @@ public class SudokuWindow extends JFrame {
 //			posY += width;
 //			posX = 77;
 //		}
+
+		setBtnColors();
 	}
 
-	public void initEingabeButtons() {
+	public void setBtnColors() {
+
+		for (int i = 0; i < field.length; i++) {
+			for (int y = 0; y < field[i].length; y++) {
+
+				int startX = i / 3;
+				startX *= 3;
+
+				int startY = y / 3;
+				startY *= 3;
+
+				if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
+					field[i][y].setBackground(Color.WHITE);
+				} else {
+					field[i][y].setBackground(Color.LIGHT_GRAY);
+				}
+
+			}
+		}
+	}
+
+	public void initInputButtons() {
 
 		int posX = 600;
 		int posY = 131;
@@ -196,6 +261,8 @@ public class SudokuWindow extends JFrame {
 
 		int count = 1;
 
+		inputButtons = new JButton[9];
+		
 		for (int i = 0; i < 3; i++) {
 			for (int y = 0; y < 3; y++) {
 
@@ -213,6 +280,8 @@ public class SudokuWindow extends JFrame {
 				btn.setVisible(true);
 				contentPane.add(btn);
 				posX += width;
+				
+				inputButtons[count - 1] = btn;
 
 				count++;
 			}
@@ -221,11 +290,47 @@ public class SudokuWindow extends JFrame {
 			posX = 600;
 		}
 	}
+	
+	public void enableDisableInputButtons() {
+		
+		boolean activate = false;
+		
+		if(actX >= 0 && actY >= 0) {
+			activate = true;
+		}
+		
+		for(JButton inb : inputButtons) {
+			inb.setEnabled(activate);
+		}
+	}
+
+	public void sudokuButtonClicked(String name) {
+		
+		//int num = Integer.parseInt(val);
+
+		String[] arr = name.split(";");
+
+		int posX = Integer.parseInt(arr[0]);
+		int posY = Integer.parseInt(arr[1]);
+
+		setBtnColors();
+		
+		actX = posX;
+		actY = posY;
+		
+		field[posX][posY].setBackground(Color.RED);
+		
+		enableDisableInputButtons();
+	}
 
 	public void setField(String val) {
 
 		int num = Integer.parseInt(val);
 
+		setField(actX, actY, num);
+		
+		//this.initField();
+		
 //		String[] arr = this.pos.split(";");
 //
 //		int posX = Integer.parseInt(arr[0]);
@@ -239,8 +344,6 @@ public class SudokuWindow extends JFrame {
 //
 //		this.dispose();
 	}
-	
-	
 
 	public void fillField() {
 
@@ -254,18 +357,40 @@ public class SudokuWindow extends JFrame {
 
 				if (val != 0) {
 					field[i][y].setEnabled(false);
+					field[i][y].setText(val + "");
+				} else {
+					field[i][y].setText("");
 				}
-				field[i][y].setText(val + "");
 			}
 		}
 	}
 
 	public void setField(int posX, int posY, int num) {
-
+		
 		if (ss.checkVal(posX, posY, num)) {
+			
+			SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, ss.getVal(posX, posY));
+			history.add(sh);
+			
 			ss.setField(posX, posY, num);
 			field[posX][posY].setText(num + "");
 		}
+	}
+	
+	public void setFieldUndo(int posX, int posY, int num) {
+		
+		//this.reset
+		
+		//if (ss.checkVal(posX, posY, num)) {
+			ss.setField(posX, posY, num);
+			
+			if(num == 0) {
+				field[posX][posY].setText("");
+			} else {
+				field[posX][posY].setText(num + "");
+			}
+			
+		//}
 	}
 
 	public void checkComplete() {
