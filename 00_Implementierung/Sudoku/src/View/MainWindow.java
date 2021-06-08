@@ -61,7 +61,7 @@ public class MainWindow {
 		JButton btnNewButton = new JButton("Sudoku weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow_Sicherung w = new SudokuWindow_Sicherung((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
+				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem(), true, false);
 				w.setVisible(true);
 			}
 		});
@@ -71,7 +71,7 @@ public class MainWindow {
 		JButton btnNewButton_1 = new JButton("Zuf\u00E4lliges Sudoku");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow_Sicherung w = new SudokuWindow_Sicherung((SudokuListItems)comboBox_weiterspielen.getSelectedItem());
+				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem(), true, false);
 				w.setVisible(true);
 			}
 		});
@@ -107,5 +107,35 @@ public class MainWindow {
 		});
 		btnNewButton_3.setBounds(74, 280, 111, 23);
 		frame.getContentPane().add(btnNewButton_3);
+		
+		JButton btnNewButton_4 = new JButton("New button");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				////////////////// nur zum testen der GUI
+				SudokuListItems sli = new SudokuListItems("d", "d");
+				SudokuWindow swskjdf = new SudokuWindow(sli, false, true);
+				swskjdf.setVisible(true);
+			}
+		});
+		btnNewButton_4.setBounds(228, 319, 89, 23);
+		frame.getContentPane().add(btnNewButton_4);
+		
+		JComboBox comboBoxFF = new JComboBox();
+		comboBoxFF.setBounds(195, 167, 135, 22);
+		for(SudokuListItems s : model.loadFFSudokus()) {
+			comboBoxFF.addItem(s);
+		}
+		frame.getContentPane().add(comboBoxFF);
+		
+		JButton button = new JButton("FreiformSudoku weiterspielen");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBoxFF.getSelectedItem(), false, true);
+				w.setVisible(true);
+			}
+		});
+		button.setBounds(195, 200, 135, 23);
+		frame.getContentPane().add(button);
 	}
 }

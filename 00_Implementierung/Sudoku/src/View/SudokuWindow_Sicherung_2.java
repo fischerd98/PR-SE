@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Model.FreiformSudoku;
 import Model.SimpleSudoku;
 import Model.SudokuHistoryItem;
 import Model.SudokuListItems;
@@ -22,7 +21,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.Font;
 
-public class SudokuWindow extends JFrame {
+public class SudokuWindow_Sicherung_2 extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -34,15 +33,9 @@ public class SudokuWindow extends JFrame {
 	private JLabel lbl_hints;
 
 	private SimpleSudoku ss;
-	private FreiformSudoku ff;
 
-	private boolean ssGame = false;
-	private boolean ffGame = false;
-	
 	private boolean continueGame = false;
 
-	private Color[] c;
-	
 	// ausgewähltes Feld
 	private int actX = -1;
 	private int actY = -1;
@@ -58,7 +51,7 @@ public class SudokuWindow extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SudokuWindow frame = new SudokuWindow(null, false, false);
+					SudokuWindow_Sicherung_2 frame = new SudokuWindow_Sicherung_2(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,24 +70,12 @@ public class SudokuWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SudokuWindow(SudokuListItems sudokuitems, boolean isSs, boolean isFf) {
+	public SudokuWindow_Sicherung_2(SudokuListItems sudokuitems) {
 
-		setColors();
-		
-		if (sudokuitems == null || (isSs && isFf) || (!isSs && !isFf)) {
+		if (sudokuitems == null) {
 			ss = new SimpleSudoku();
 		} else {
-			if(isSs && !isFf) {
-				ss = new SimpleSudoku(sudokuitems);
-				ssGame = true;
-				ffGame = false;
-			} else {
-				ff = new FreiformSudoku(sudokuitems);
-				//ff = new FreiformSudoku();
-				ffGame = true;
-				ssGame = false;
-			}
-			
+			ss = new SimpleSudoku(sudokuitems);
 			continueGame = true;
 		}
 
@@ -214,20 +195,18 @@ public class SudokuWindow extends JFrame {
 		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
 		mntmPrfen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow.this.checkComplete();
+				SudokuWindow_Sicherung_2.this.checkComplete();
 			}
 		});
 		mnSolver.add(mntmPrfen);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setBackground(Color.white);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 400, 400);
-		panel.setBackground(Color.white);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -297,21 +276,6 @@ public class SudokuWindow extends JFrame {
 		enableDisableInputButtons();
 	}
 
-	public void setColors() {
-		c = new Color[9];
-		
-		c[0] = Color.RED;
-		c[1] = Color.BLUE;
-		c[2] = Color.YELLOW;
-		c[3] = Color.GRAY;
-		c[4] = Color.CYAN;
-		c[5] = Color.GREEN;
-		c[6] = Color.PINK;
-		c[7] = Color.MAGENTA;
-		c[8] = Color.ORANGE;
-		
-	}
-	
 	public void initField() {
 
 		int initialPosX = 10;
@@ -339,8 +303,6 @@ public class SudokuWindow extends JFrame {
 				});
 				btn.setName(i + ";" + y);
 				btn.setBounds(posX, posY, width, width);
-				btn.setFont(new Font("Arial", Font.BOLD, 17));
-				btn.setForeground(Color.white);
 				btn.setVisible(true);
 				panel.add(btn);
 				posX += width;
@@ -379,49 +341,23 @@ public class SudokuWindow extends JFrame {
 
 	public void setBtnColors() {
 
-		
-		if(this.ssGame) {
-			for (int i = 0; i < field.length; i++) {
-				for (int y = 0; y < field[i].length; y++) {
+		for (int i = 0; i < field.length; i++) {
+			for (int y = 0; y < field[i].length; y++) {
 
-					int startX = i / 3;
-					startX *= 3;
+				int startX = i / 3;
+				startX *= 3;
 
-					int startY = y / 3;
-					startY *= 3;
+				int startY = y / 3;
+				startY *= 3;
 
-					if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
-						field[i][y].setBackground(Color.WHITE);
-					} else {
-						field[i][y].setBackground(Color.LIGHT_GRAY);
-					}
-
+				if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
+					field[i][y].setBackground(Color.WHITE);
+				} else {
+					field[i][y].setBackground(Color.LIGHT_GRAY);
 				}
-			}
-		} else if(this.ffGame) {
-			for (int i = 0; i < field.length; i++) {
-				for (int y = 0; y < field[i].length; y++) {
 
-					Color col = c[ff.getFieldConstruction()[i][y] - 1];
-					
-					field[i][y].setBackground(col);
-					
-//					int startX = i / 3;
-//					startX *= 3;
-//
-//					int startY = y / 3;
-//					startY *= 3;
-//
-//					if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
-//						field[i][y].setBackground(Color.WHITE);
-//					} else {
-//						field[i][y].setBackground(Color.LIGHT_GRAY);
-//					}
-
-				}
 			}
 		}
-		
 		
 //		for(int i=0;i<ss.getHints().size();i++) {
 //			
@@ -527,16 +463,8 @@ public class SudokuWindow extends JFrame {
 	}
 
 	public void fillField() {
-		
-		int start[][];
-		
-		if(ssGame) {
-			start = ss.getStart();
-		} else {
-			start = ff.getStart();  
-		}
-		
-		
+
+		int start[][] = ss.getStart();
 
 		for (int i = 0; i < start.length; i++) {
 

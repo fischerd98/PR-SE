@@ -1,3 +1,4 @@
+
 package Tests;
 
 import static org.junit.Assert.assertFalse;
@@ -6,10 +7,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import Model.SimpleSudoku;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import View.SudokuWindow;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,7 +35,7 @@ public class SimpleSudokuTest {
 			  { 0, 9, 0, 0, 0, 0, 4, 0, 0 } 
 			};
 			s = new SimpleSudoku();
-			s.setStart(start);
+			s.setGame(start);
     }
 
 	@AfterEach
@@ -44,7 +44,7 @@ public class SimpleSudokuTest {
 	}
 
 	@Test
-	public void TestCheckValue() {
+	public void CheckValue() {
 
 		assertFalse(s.checkVal(4,1,9));
 		assertFalse(s.checkVal(1,4,9));
@@ -60,46 +60,6 @@ public class SimpleSudokuTest {
 
 
 	}
-	//values im Array
-	@Test
-	public void TestSetField() {
 
-		s.setField(1,1,4);
-		assertEquals(4,s.getVal(1,1));
-		s.setField(8,5,1);
-		assertEquals(1,s.getVal(8,5));
-		s.setField(0,8,4);
-		assertEquals(4,s.getVal(0,8));
-		s.setField(3,3,8);
-		assertEquals(8,s.getVal(3,3));
-		s.setField(6,7,9);
-		assertEquals(9,s.getVal(6,7));
-		
-	}
-
-	
-//	//solve() test
-//	@Test
-//	public void TestSolve() {
-//
-//		s.solve();
-//		assertTrue(Arrays.deepEquals(,s.getGame()));  
-//		
-//	}
-	//check Complete
-	@Test
-	public void TestComplete() {
-	 
-		start = new int[][] { { 8, 1, 2, 7, 5, 3, 6, 4, 9 }, { 9, 4, 3, 6, 8, 2, 1, 7, 5 },
-			{ 6, 7, 5, 4, 9, 1, 2, 8, 3 }, { 1, 5, 4, 2, 3, 7, 8, 9, 6 }, { 3, 6, 9, 8, 4, 5, 7, 2, 1 },
-			{ 2, 8, 7, 1, 6, 9, 5, 3, 4 }, { 5, 2, 1, 9, 7, 4, 3, 6, 8 }, { 4, 3, 8, 5, 2, 6, 9, 1, 7 },
-			{ 7, 9, 6, 3, 1, 8, 4, 5, 2 } };
-		s = new SimpleSudoku();
-		s.setStart(start);
-		assertTrue(s.checkComplete());
-	}
-	
 }
-	
-
 
