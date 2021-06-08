@@ -1,11 +1,13 @@
 package Model;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 
 public class FreiformSudoku extends Sudoku {
 
@@ -101,6 +103,19 @@ public class FreiformSudoku extends Sudoku {
 		this.countHints = countHints;
 	}
 
+	public void setField(int posX, int posY, int num) {
+		start[posX][posY] = num;
+	}
+
+	public int getVal(int x, int y) {
+		return start[x][y];
+	}
+	
+	public int incrementCountHints() {
+		countHints++;
+		return countHints;
+	}
+
 	public void readSudoku(String path) {
 
 		System.out.println("Read");
@@ -120,26 +135,12 @@ public class FreiformSudoku extends Sudoku {
 			fieldConstruction = toIntArray(records.subList(0, 9));
 			start = toIntArray(records.subList(10, 19));
 		}
-		
+
 		System.out.println();
 
 	}
 
 	public int[][] toIntArray(List<List<String>> records) {
-
-//		System.out.println("Read");
-//
-//		int[][] arr = new int[records.size()][records.size()];
-//
-//		for (int i = 0; i < records.size(); i++) {
-//			for (int y = 0; y < records.get(i).size(); y++) {
-//
-//				// arr[i][y] = Integer.parseInt(records.get(i).get(y).trim());
-//			}
-//			System.out.println();
-//		}
-//
-//		return arr;
 
 		int[][] arr = new int[9][9];
 
@@ -150,5 +151,199 @@ public class FreiformSudoku extends Sudoku {
 		}
 
 		return arr;
+	}
+
+	public boolean checkVal(int posX, int posY, int num) {
+
+		// Spalte
+		for (int i = 0; i < 9; i++) {
+			if (start[i][posY] == num) {
+				return false;
+			}
+		}
+
+		// Zeile
+		for (int i = 0; i < 9; i++) {
+			if (start[posX][i] == num) {
+				return false;
+			}
+		}
+
+		return check9SquareNumPossible(posX, posY, num);
+	}
+
+	public boolean check9SquareNumPossible(int posx, int posy, int val) {
+
+		int fieldColor = fieldConstruction[posx][posy];
+
+		int count = 0;
+
+		// falls das Feld bereits so belegt ist
+		// sonst würde es zu oft gezählt
+		if (start[posx][posy] == val)
+			count--;
+
+		for (int i = 0; i < start.length; i++) {
+			for (int y = 0; y < start[i].length; y++) {
+				if (fieldConstruction[i][y] == fieldColor && start[i][y] == val) {
+					count++;
+				}
+			}
+		}
+
+		return count < 1;
+	}
+
+	
+	
+	public boolean solveSudoku() {
+
+		int[][] empty = getEmptyFields();
+
+		boolean solvable = solveSudokuRec(start, empty, 0);
+
+		if (solvable) {
+			this.countHints += empty.length;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// Sudoku lösen
+	public boolean solveSudokuRec(int[][] sudoku, int[][] list, int position) {
+		if (position >= list.length) {// Wenn alle Elemente durch sind
+			return (true);
+		}
+		int x = list[position][0];
+		int y = list[position][1];
+
+		for (int i = 1; i <= 9; i++) {
+			if (checkVal(y, x, i)) {
+				sudoku[y][x] = i;
+				if (solveSudokuRec(sudoku, list, position + 1)) {
+					return (true);
+				}
+				sudoku[y][x] = 0;
+			}
+		}
+		return (false);
+	}
+
+//	// prüft, ob eine Zahl korrekt ist
+//	public static boolean numberIsValid(int[][] sudoku, int x, int y, int value) {
+//		if (sudoku[y][x] != 0) {// Falls ein Feld schon belegt ist
+//			return (false);
+//		}
+//		int feld_x = (x / 3) * 3;
+//		int feld_y = (y / 3) * 3;
+//		for (int i = 0; i < sudoku.length; i++) {
+//			if (sudoku[y][i] == value || sudoku[i][x] == value) {// Zeile und Spalte
+//				return (false);
+//			} else if (sudoku[feld_y + (i / 3)][feld_x + (i % 3)] == value) {
+//				return (false);
+//			}
+//		}
+//
+//		return (true);
+//	}
+	
+	
+	
+	// gibt alle leeren Felder zurück
+	public int[][] getEmptyFields() {
+
+		int[][] list = new int[0][2];
+
+		for (int i = 0; i < start.length; i++) {
+			for (int j = 0; j < start[i].length; j++) {
+				if (start[i][j] == 0) {
+					int[][] temp = new int[list.length + 1][2];
+					for (int k = 0; k < list.length; k++)
+						temp[k] = list[k];
+					temp[temp.length - 1][0] = j;// j = x
+					temp[temp.length - 1][1] = i;// i = y
+					list = temp;
+				}
+			}
+		}
+
+		return (list);
+	}
+	
+	
+	
+	
+	
+	public boolean solveSudokuNextStep(int x, int y) {
+
+		int[][] copiedArray = new int[start.length][start[0].length];
+		
+		for (int i = 0; i < copiedArray.length; i++)
+			copiedArray[i] = Arrays.copyOf(start[i], start[i].length);
+				
+		int[][] empty = getEmptyFields();
+		System.out.println(empty.length);
+
+		boolean solvable = solveSudokuRec(copiedArray, empty, 0);
+		
+		start[x][y] = copiedArray[x][y];
+ 		
+		int[] arr = new int[]{x, y};
+		hints.add(arr);
+		
+		return solvable;
+
+	}
+	
+	
+	
+	public void saveSudoku() {
+		saveSudoku("Sudokus\\FreiformSudoku\\Level1\\" + sli.getName());
+	}
+
+	public void saveSudoku(String filename) {
+
+		try (CSVWriter writer = new CSVWriter(new FileWriter(filename + ".csv"));) {
+
+			writer.writeAll(toStringArr(start));
+			writer.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public Iterable<String[]> toStringArr(int[][] arr) {
+
+		List<String[]> list = new ArrayList<>();
+		String[] arrS;
+
+		for (int i = 0; i < fieldConstruction.length; i++) {
+
+			arrS = new String[fieldConstruction[i].length];
+
+			for (int y = 0; y < fieldConstruction[i].length; y++) {
+				arrS[y] = fieldConstruction[i][y] + "";
+			}
+
+			list.add(arrS);
+		}
+		
+		list.add(new String[] {"\n"});
+
+		for (int i = 0; i < arr.length; i++) {
+
+			arrS = new String[arr[i].length];
+
+			for (int y = 0; y < arr[i].length; y++) {
+				arrS[y] = arr[i][y] + "";
+			}
+
+			list.add(arrS);
+		}
+		
+		return list;
 	}
 }
