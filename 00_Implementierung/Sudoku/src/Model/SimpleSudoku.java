@@ -23,7 +23,7 @@ public class SimpleSudoku extends Sudoku {
 	public SimpleSudoku(SudokuListItems sli) {
 
 		countHints = 0;
-		
+		hints = new ArrayList<int[]>();
 		this.sli = sli;
 
 		readSudoku(sli.getSudokuPath());
@@ -107,9 +107,6 @@ public class SimpleSudoku extends Sudoku {
 				return false;
 			}
 		}
-
-		int x;
-		int y;
 
 		return check9SquareNumPossible(posX, posY, num);
 	}
@@ -245,7 +242,9 @@ public class SimpleSudoku extends Sudoku {
 		for (int i = 0; i < records.size(); i++) {
 			for (int y = 0; y < records.get(i).size(); y++) {
 				arr[i][y] = Integer.parseInt(records.get(i).get(y));
+				System.out.print(arr[i][y] + " ");
 			}
+			System.out.println();
 		}
 
 		return arr;
