@@ -7,22 +7,23 @@ import javax.swing.JFrame;
 import Model.Model;
 import Model.SudokuListItems;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JRadioButton;
 
 public class MainWindow {
 
 	private JFrame frame;
 	private Model model;
-	
+
 	private JComboBox comboBox_weiterspielen;
 	private JComboBox comboBox_neu;
-	
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -43,9 +44,9 @@ public class MainWindow {
 	 * Create the application.
 	 */
 	public MainWindow() {
-		
+
 		this.model = new Model();
-		
+
 		initialize();
 	}
 
@@ -54,88 +55,168 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 538, 500);
+		frame.setBounds(100, 100, 382, 574);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		JButton btnNewButton = new JButton("Sudoku weiterspielen");
+
+		ActionListener rdbtnActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				selectionChanged();
+			}
+		};
+
+		JButton btnNewButton = new JButton("weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem(), true, false);
+				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_weiterspielen.getSelectedItem(), true,
+						false);
 				w.setVisible(true);
 			}
 		});
-		btnNewButton.setBounds(195, 75, 135, 23);
+		btnNewButton.setBounds(30, 237, 151, 23);
 		frame.getContentPane().add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("Zuf\u00E4lliges Sudoku");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBox_weiterspielen.getSelectedItem(), true, false);
+				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_weiterspielen.getSelectedItem(), true,
+						false);
 				w.setVisible(true);
 			}
 		});
-		btnNewButton_1.setBounds(50, 109, 135, 23);
+		btnNewButton_1.setBounds(30, 305, 309, 23);
 		frame.getContentPane().add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("Sudoku ausw\u00E4hlen");
-		btnNewButton_2.setBounds(340, 75, 135, 23);
+
+		JButton btnNewButton_2 = new JButton("neu starten");
+		btnNewButton_2.setBounds(191, 237, 148, 23);
 		frame.getContentPane().add(btnNewButton_2);
-		
+
 		comboBox_weiterspielen = new JComboBox();
-		comboBox_weiterspielen.setBounds(195, 109, 135, 22);
-		for(SudokuListItems s : model.loadSimpleSudokus()) {
+		comboBox_weiterspielen.setBounds(204, 393, 135, 22);
+		for (SudokuListItems s : model.loadSimpleSudokus()) {
 			comboBox_weiterspielen.addItem(s);
-		}		
+		}
 		frame.getContentPane().add(comboBox_weiterspielen);
-		
+
 		comboBox_neu = new JComboBox();
-		comboBox_neu.setBounds(340, 109, 135, 22);
+		comboBox_neu.setBounds(191, 357, 135, 22);
 		frame.getContentPane().add(comboBox_neu);
-		
-		JLabel lblNewLabel = new JLabel("Sudoku Hauptmen\u00FC");
+
+		JLabel lblNewLabel = new JLabel("Sudoku");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(170, 30, 181, 34);
+		lblNewLabel.setBounds(141, 21, 65, 34);
 		frame.getContentPane().add(lblNewLabel);
-		
+
 		JButton btnNewButton_3 = new JButton("Sudoku erstellen");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CreateSudokuWindow csw = new CreateSudokuWindow();
-				csw.setVisible(true);				
+				csw.setVisible(true);
 			}
 		});
-		btnNewButton_3.setBounds(74, 280, 111, 23);
+		btnNewButton_3.setBounds(30, 271, 309, 23);
 		frame.getContentPane().add(btnNewButton_3);
-		
+
 		JButton btnNewButton_4 = new JButton("New button");
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				////////////////// nur zum testen der GUI
 				SudokuListItems sli = new SudokuListItems("d", "d");
 				SudokuWindow swskjdf = new SudokuWindow(sli, false, true);
 				swskjdf.setVisible(true);
 			}
 		});
-		btnNewButton_4.setBounds(228, 319, 89, 23);
+		btnNewButton_4.setBounds(198, 501, 89, 23);
 		frame.getContentPane().add(btnNewButton_4);
-		
+
 		JComboBox comboBoxFF = new JComboBox();
-		comboBoxFF.setBounds(195, 167, 135, 22);
-		for(SudokuListItems s : model.loadFFSudokus()) {
+		comboBoxFF.setBounds(204, 426, 135, 22);
+		for (SudokuListItems s : model.loadFFSudokus()) {
 			comboBoxFF.addItem(s);
 		}
 		frame.getContentPane().add(comboBoxFF);
-		
+
 		JButton button = new JButton("FreiformSudoku weiterspielen");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems)comboBoxFF.getSelectedItem(), false, true);
+				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBoxFF.getSelectedItem(), false, true);
 				w.setVisible(true);
 			}
 		});
-		button.setBounds(195, 200, 135, 23);
+		button.setBounds(198, 454, 135, 23);
 		frame.getContentPane().add(button);
+
+		JRadioButton rdbtn9x9 = new JRadioButton("9x9");
+		rdbtn9x9.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtn9x9.setBounds(30, 83, 109, 23);
+		rdbtn9x9.setSelected(true);
+		rdbtn9x9.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtn9x9);
+
+		JLabel lblNewLabel_1 = new JLabel("Sudoku Form");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_1.setBounds(127, 62, 89, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+
+		JRadioButton rdbtnNinja = new JRadioButton("Ninja");
+		rdbtnNinja.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtnNinja.setBounds(141, 83, 109, 23);
+		rdbtnNinja.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtnNinja);
+
+		JRadioButton rdbtnFreiform = new JRadioButton("Freiform");
+		rdbtnFreiform.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtnFreiform.setBounds(252, 83, 109, 23);
+		rdbtnFreiform.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtnFreiform);
+
+		ButtonGroup gbForm = new ButtonGroup();
+		gbForm.add(rdbtn9x9);
+		gbForm.add(rdbtnFreiform);
+		gbForm.add(rdbtnNinja);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(30, 204, 309, 22);
+		frame.getContentPane().add(comboBox);
+
+		JLabel lblNewLabel_2 = new JLabel("Schwierigkeitsgrad");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_2.setBounds(120, 117, 148, 14);
+		frame.getContentPane().add(lblNewLabel_2);
+
+		JRadioButton rdbtnEasy = new JRadioButton("Einfach");
+		rdbtnEasy.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtnEasy.setBounds(30, 138, 109, 23);
+		rdbtnEasy.setSelected(true);
+		rdbtnEasy.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtnEasy);
+
+		JRadioButton rdbtnMedium = new JRadioButton("Mittel");
+		rdbtnMedium.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtnMedium.setBounds(141, 138, 109, 23);
+		rdbtnMedium.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtnMedium);
+
+		JRadioButton rdbtnHard = new JRadioButton("Schwer");
+		rdbtnHard.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbtnHard.setBounds(252, 140, 109, 23);
+		rdbtnHard.addActionListener(rdbtnActionListener);
+		frame.getContentPane().add(rdbtnHard);
+
+		ButtonGroup gbLevel = new ButtonGroup();
+		gbLevel.add(rdbtnEasy);
+		gbLevel.add(rdbtnMedium);
+		gbLevel.add(rdbtnHard);
+
+		JLabel lblNewLabel_3 = new JLabel("Spiel ausw\u00E4hlen");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_3.setBounds(127, 179, 174, 14);
+		frame.getContentPane().add(lblNewLabel_3);
+
+	}
+
+	public void selectionChanged() {
+		System.out.println("sklfjdkl");
 	}
 }
