@@ -21,8 +21,14 @@ public class MainWindow {
 	private JFrame frame;
 	private Model model;
 
-	private JComboBox comboBox_weiterspielen;
-	private JComboBox comboBox_neu;
+	//private JComboBox comboBox_weiterspielen;
+	//private JComboBox comboBox_neu;
+	private JComboBox comboBox_sudokus;
+
+	private ButtonGroup gbForm;
+
+	private int selectedForm = 0; // 0 = 9x9; 1 = Freiform; // other = Ninja
+	private int selectedLevel = 0; // 0 = Easy; 1 = Medium; // other = Hard
 
 	/**
 	 * Launch the application.
@@ -61,16 +67,53 @@ public class MainWindow {
 
 		ActionListener rdbtnActionListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
+
+				JRadioButton rb = (JRadioButton) actionEvent.getSource();
+
+				switch (rb.getText()) {
+				case "9x9":
+					selectedForm = 0;
+					break;
+				case "Freiform":
+					selectedForm = 1;
+					break;
+				case "Ninja":
+					selectedForm = 2;
+					break;
+				case "Einfach":
+					selectedLevel = 0;
+					break;
+				case "Mittel":
+					selectedLevel = 1;
+					break;
+				case "Schwer":
+					selectedLevel = 2;
+					break;
+				}
+
 				selectionChanged();
 			}
 		};
 
 		JButton btnNewButton = new JButton("weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_weiterspielen.getSelectedItem(), true,
-						false);
-				w.setVisible(true);
+				
+				if(selectedForm == 0) {
+					SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_sudokus.getSelectedItem(), true,
+							false);
+					w.setVisible(true);
+				} else {
+					
+					SudokuListItems k = (SudokuListItems) comboBox_sudokus.getSelectedItem();
+					
+					SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_sudokus.getSelectedItem(), false,
+							true);
+					w.setVisible(true);
+				}
+				
+				
 			}
 		});
 		btnNewButton.setBounds(30, 237, 151, 23);
@@ -79,7 +122,7 @@ public class MainWindow {
 		JButton btnNewButton_1 = new JButton("Zuf\u00E4lliges Sudoku");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_weiterspielen.getSelectedItem(), true,
+				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_sudokus.getSelectedItem(), true,
 						false);
 				w.setVisible(true);
 			}
@@ -91,16 +134,16 @@ public class MainWindow {
 		btnNewButton_2.setBounds(191, 237, 148, 23);
 		frame.getContentPane().add(btnNewButton_2);
 
-		comboBox_weiterspielen = new JComboBox();
-		comboBox_weiterspielen.setBounds(204, 393, 135, 22);
-		for (SudokuListItems s : model.loadSimpleSudokus()) {
-			comboBox_weiterspielen.addItem(s);
-		}
-		frame.getContentPane().add(comboBox_weiterspielen);
+//		comboBox_weiterspielen = new JComboBox();
+//		comboBox_weiterspielen.setBounds(204, 393, 135, 22);
+//		for (SudokuListItems s : model.loadSimpleSudokus()) {
+//			comboBox_weiterspielen.addItem(s);
+//		}
+//		frame.getContentPane().add(comboBox_weiterspielen);
 
-		comboBox_neu = new JComboBox();
-		comboBox_neu.setBounds(191, 357, 135, 22);
-		frame.getContentPane().add(comboBox_neu);
+//		comboBox_neu = new JComboBox();
+//		comboBox_neu.setBounds(191, 357, 135, 22);
+//		frame.getContentPane().add(comboBox_neu);
 
 		JLabel lblNewLabel = new JLabel("Sudoku");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -117,35 +160,35 @@ public class MainWindow {
 		btnNewButton_3.setBounds(30, 271, 309, 23);
 		frame.getContentPane().add(btnNewButton_3);
 
-		JButton btnNewButton_4 = new JButton("New button");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+//		JButton btnNewButton_4 = new JButton("New button");
+//		btnNewButton_4.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//
+//				////////////////// nur zum testen der GUI
+//				SudokuListItems sli = new SudokuListItems("d", "d");
+//				SudokuWindow swskjdf = new SudokuWindow(sli, false, true);
+//				swskjdf.setVisible(true);
+//			}
+//		});
+//		btnNewButton_4.setBounds(198, 501, 89, 23);
+//		frame.getContentPane().add(btnNewButton_4);
 
-				////////////////// nur zum testen der GUI
-				SudokuListItems sli = new SudokuListItems("d", "d");
-				SudokuWindow swskjdf = new SudokuWindow(sli, false, true);
-				swskjdf.setVisible(true);
-			}
-		});
-		btnNewButton_4.setBounds(198, 501, 89, 23);
-		frame.getContentPane().add(btnNewButton_4);
+//		JComboBox comboBoxFF = new JComboBox();
+//		comboBoxFF.setBounds(204, 426, 135, 22);
+//		for (SudokuListItems s : model.loadFFSudokus()) {
+//			comboBoxFF.addItem(s);
+//		}
+//		frame.getContentPane().add(comboBoxFF);
 
-		JComboBox comboBoxFF = new JComboBox();
-		comboBoxFF.setBounds(204, 426, 135, 22);
-		for (SudokuListItems s : model.loadFFSudokus()) {
-			comboBoxFF.addItem(s);
-		}
-		frame.getContentPane().add(comboBoxFF);
-
-		JButton button = new JButton("FreiformSudoku weiterspielen");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBoxFF.getSelectedItem(), false, true);
-				w.setVisible(true);
-			}
-		});
-		button.setBounds(198, 454, 135, 23);
-		frame.getContentPane().add(button);
+//		JButton button = new JButton("FreiformSudoku weiterspielen");
+//		button.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				SudokuWindow w = new SudokuWindow((SudokuListItems) comboBoxFF.getSelectedItem(), false, true);
+//				w.setVisible(true);
+//			}
+//		});
+//		button.setBounds(198, 454, 135, 23);
+//		frame.getContentPane().add(button);
 
 		JRadioButton rdbtn9x9 = new JRadioButton("9x9");
 		rdbtn9x9.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -171,14 +214,14 @@ public class MainWindow {
 		rdbtnFreiform.addActionListener(rdbtnActionListener);
 		frame.getContentPane().add(rdbtnFreiform);
 
-		ButtonGroup gbForm = new ButtonGroup();
+		gbForm = new ButtonGroup();
 		gbForm.add(rdbtn9x9);
 		gbForm.add(rdbtnFreiform);
 		gbForm.add(rdbtnNinja);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(30, 204, 309, 22);
-		frame.getContentPane().add(comboBox);
+		comboBox_sudokus = new JComboBox();
+		comboBox_sudokus.setBounds(30, 204, 309, 22);
+		frame.getContentPane().add(comboBox_sudokus);
 
 		JLabel lblNewLabel_2 = new JLabel("Schwierigkeitsgrad");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -214,9 +257,18 @@ public class MainWindow {
 		lblNewLabel_3.setBounds(127, 179, 174, 14);
 		frame.getContentPane().add(lblNewLabel_3);
 
+		selectionChanged();
 	}
 
-	public void selectionChanged() {
-		System.out.println("sklfjdkl");
+	public void selectionChanged() {		
+		
+		System.out.println(selectedForm + " " + selectedLevel);
+		
+		comboBox_sudokus.removeAllItems();
+		
+		for (SudokuListItems s : model.loadSudokus(selectedForm, selectedLevel)) {
+			comboBox_sudokus.addItem(s);
+		}
+
 	}
 }

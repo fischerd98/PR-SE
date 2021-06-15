@@ -241,7 +241,7 @@ public class SimpleSudoku extends Sudoku {
 
 		for (int i = 0; i < records.size(); i++) {
 			for (int y = 0; y < records.get(i).size(); y++) {
-				arr[i][y] = Integer.parseInt(records.get(i).get(y));
+				arr[i][y] = Integer.parseInt(records.get(i).get(y).trim());
 				System.out.print(arr[i][y] + " ");
 			}
 			System.out.println();
