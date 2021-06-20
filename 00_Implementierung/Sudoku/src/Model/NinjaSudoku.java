@@ -1,24 +1,31 @@
 package Model;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JButton;
+
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 public class NinjaSudoku extends Sudoku {
-	
+
 	private int[][] start;
 
 	private SudokuListItems sli;
 
 	private List<int[]> hints;
-	
+
 	private int countHints;
-	
+
 	public NinjaSudoku(SudokuListItems sli) {
 
 		countHints = 0;
@@ -29,32 +36,52 @@ public class NinjaSudoku extends Sudoku {
 	}
 
 	public NinjaSudoku() {
-		
+
 		hints = new ArrayList<int[]>();
-		start = new int[][] { { 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 }, 
-			{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 } };
+		start = new int[][] { { 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 0, 0, 0, 0, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 0, 0, 0, 0, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 0, 0, 0, 0, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 0, 0, 0, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 0, 0, 0, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 },
+				{ 1, 2, 3, 4, 5, 6, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1 } };
+
+		start = new int[][] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 	}
-
-
 
 	public int[][] getStart() {
 		return start;
@@ -79,51 +106,199 @@ public class NinjaSudoku extends Sudoku {
 	public int getCountHints() {
 		return countHints;
 	}
-	
+
 	public int incrementCountHints() {
 		countHints++;
 		return countHints;
 	}
-	
-//	public boolean checkVal(int posX, int posY, int num) {
-//
-//		// Spalte
-//		for (int i = 0; i < 9; i++) {
-//			if (start[i][posY] == num) {
-//				return false;
-//			}
-//		}
-//
-//		// Zeile
-//		for (int i = 0; i < 9; i++) {
-//			if (start[posX][i] == num) {
-//				return false;
-//			}
-//		}
-//
-//		return check9SquareNumPossible(posX, posY, num);
-//	}
 
-//	public boolean check9SquareNumPossible(int posx, int posy, int val) {
-//
-//		int startX = posx / 3;
-//		startX *= 3;
-//		int endX = startX + 3;
-//
-//		int startY = posy / 3;
-//		startY *= 3;
-//		int endY = startY + 3;
-//
-//		for (int i = startX; i < endX; i++) {
-//			for (int y = startY; y < endY; y++) {
-//				if (this.start[i][y] == val)
-//					return false;
-//			}
-//		}
-//
-//		return true;
-//	}
-//
+	public boolean checkVal(int posX, int posY, int num) {
+
+		getFieldNums(posX, posY);
+
+		if (!checkColumn(posX, posY, num)) {
+			return false;
+		}
+		if (!checkRow(posX, posY, num)) {
+			return false;
+		}
+
+		return check9SquareNumPossible(posX, posY, num);
+	}
+
+	// 1 - 2
+	// - 3 -
+	// 4 - 5
+	public List<Integer> getFieldNums(int posX, int posY) {
+
+		ArrayList<Integer> fields = new ArrayList<>();
+
+		if (posX <= 5) {
+
+			if (posY <= 8) {
+				fields.add(1);
+			} else {
+				fields.add(2);
+			}
+
+		} else if (posX >= 6 && posX <= 8) {
+
+			if (posY <= 5) {
+				fields.add(1);
+			} else if (posY <= 8) {
+				fields.add(1);
+				fields.add(3);
+			} else if (posY <= 11) {
+				fields.add(3);
+			} else if (posY <= 14) {
+				fields.add(3);
+				fields.add(2);
+			} else {
+				fields.add(2);
+			}
+
+		} else if (posX <= 11) {
+			fields.add(3);
+		} else if (posX >= 12 && posX <= 14) {
+
+			if (posY <= 5) {
+				fields.add(4);
+			} else if (posY <= 8) {
+				fields.add(4);
+				fields.add(3);
+			} else if (posY <= 11) {
+				fields.add(3);
+			} else if (posY <= 14) {
+				fields.add(3);
+				fields.add(5);
+			} else {
+				fields.add(5);
+			}
+		} else if (posX >= 15) {
+			if (posY <= 8) {
+				fields.add(4);
+			} else {
+				fields.add(5);
+			}
+		}
+
+		return fields;
+	}
+
+	public boolean checkRow(int posX, int posY, int num) {
+
+		ArrayList<Integer> fields = (ArrayList<Integer>) getFieldNums(posX, posY);
+
+		for (int i = 0; i < fields.size(); i++) {
+			if (fields.get(i) == 1) {
+
+				for (int y = 0; y <= 8; y++) {
+					if (start[posX][y] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 2) {
+
+				for (int y = 12; y <= 20; y++) {
+					if (start[posX][y] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 3) {
+
+				for (int y = 6; y <= 14; y++) {
+					if (start[posX][y] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 4) {
+
+				for (int y = 0; y <= 8; y++) {
+					if (start[posX][y] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 5) {
+
+				for (int y = 12; y <= 20; y++) {
+					if (start[posX][y] == num) {
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public boolean checkColumn(int posX, int posY, int num) {
+
+		ArrayList<Integer> fields = (ArrayList<Integer>) getFieldNums(posX, posY);
+
+		for (int i = 0; i < fields.size(); i++) {
+			if (fields.get(i) == 1) {
+
+				System.out.println("Test");
+
+				for (int y = 0; y <= 8; y++) {
+					if (start[y][posY] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 2) {
+
+				for (int y = 0; y <= 8; y++) {
+					if (start[y][posY] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 3) {
+
+				for (int y = 6; y <= 14; y++) {
+					if (start[y][posY] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 4) {
+
+				for (int y = 12; y <= 20; y++) {
+					if (start[y][posY] == num) {
+						return false;
+					}
+				}
+			} else if (fields.get(i) == 5) {
+
+				for (int y = 12; y <= 20; y++) {
+					if (start[y][posY] == num) {
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public boolean check9SquareNumPossible(int posx, int posy, int val) {
+
+		int startX = posx / 3;
+		startX *= 3;
+		int endX = startX + 3;
+
+		int startY = posy / 3;
+		startY *= 3;
+		int endY = startY + 3;
+
+		for (int i = startX; i < endX; i++) {
+			for (int y = startY; y < endY; y++) {
+				if (this.start[i][y] == val)
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 //	public boolean checkComplete() {
 //
 //		boolean found;
@@ -197,7 +372,7 @@ public class NinjaSudoku extends Sudoku {
 //	}
 
 	public void saveSudoku() {
-		//saveSudoku("SimpleSudoku\\angefangen\\" + sli.getName());
+		// saveSudoku("SimpleSudoku\\angefangen\\" + sli.getName());
 	}
 
 	public void saveSudoku(String filename) {
@@ -308,62 +483,59 @@ public class NinjaSudoku extends Sudoku {
 //		hints.add(arr);
 //		
 //		return solvable;
-		
+
 		return false;
 	}
 
 	public boolean solveSudoku() {
 
-//		int[][] empty = getEmptyFields();
-//
-//		boolean solvable = solveSudokuRec(start, empty, 0);
-//
-//		if (solvable) {
-//			this.countHints += empty.length;
-//			return true;
-//		} else {
-//			return false;
-//		}
-		
-		return false;
+		int[][] empty = getEmptyFields();
+
+		boolean solvable = solveSudokuRec(start, empty, 0);
+
+		if (solvable) {
+			this.countHints += empty.length;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	// Sudoku lösen
 	public boolean solveSudokuRec(int[][] sudoku, int[][] list, int position) {
-//		if (position >= list.length) {// Wenn alle Elemente durch sind
-//			return (true);
-//		}
-//		int x = list[position][0];
-//		int y = list[position][1];
-//
-//		for (int i = 1; i <= 9; i++) {
-//			if (numberIsValid(sudoku, x, y, i)) {
-//				sudoku[y][x] = i;
-//				if (solveSudokuRec(sudoku, list, position + 1)) {
-//					return (true);
-//				}
-//				sudoku[y][x] = 0;
-//			}
-//		}
+		if (position >= list.length) {// Wenn alle Elemente durch sind
+			return (true);
+		}
+		int x = list[position][0];
+		int y = list[position][1];
+
+		for (int i = 1; i <= 9; i++) {
+			if (numberIsValid(x, y, i)) {
+				sudoku[y][x] = i;
+				if (solveSudokuRec(sudoku, list, position + 1)) {
+					return (true);
+				}
+				sudoku[y][x] = 0;
+			}
+		}
 		return false;
 	}
 
 	// prüft, ob eine Zahl korrekt ist
-	public static boolean numberIsValid(int[][] sudoku, int x, int y, int value) {
+	public boolean numberIsValid(int x, int y, int value) {
+
 //		if (sudoku[y][x] != 0) {// Falls ein Feld schon belegt ist
 //			return (false);
 //		}
-//		int feld_x = (x / 3) * 3;
-//		int feld_y = (y / 3) * 3;
-//		for (int i = 0; i < sudoku.length; i++) {
-//			if (sudoku[y][i] == value || sudoku[i][x] == value) {// Zeile und Spalte
-//				return (false);
-//			} else if (sudoku[feld_y + (i / 3)][feld_x + (i % 3)] == value) {
-//				return (false);
-//			}
-//		}
 
-		return true;
+		if (!this.checkColumn(y, x, value)) {
+			return false;
+		}
+		if (!this.checkRow(y, x, value)) {
+			return false;
+		}
+
+		return check9SquareNumPossible(y, x, value);
 	}
 
 	// gibt alle leeren Felder zurück
@@ -371,18 +543,20 @@ public class NinjaSudoku extends Sudoku {
 
 		int[][] list = new int[0][2];
 
-//		for (int i = 0; i < start.length; i++) {
-//			for (int j = 0; j < start[i].length; j++) {
-//				if (start[i][j] == 0) {
-//					int[][] temp = new int[list.length + 1][2];
-//					for (int k = 0; k < list.length; k++)
-//						temp[k] = list[k];
-//					temp[temp.length - 1][0] = j;// j = x
-//					temp[temp.length - 1][1] = i;// i = y
-//					list = temp;
-//				}
-//			}
-//		}
+		for (int i = 0; i < start.length; i++) {
+			for (int j = 0; j < start[i].length; j++) {
+				if (!((i >= 9 && i <= 11 && (j <= 5 || j >= 15)) || (j >= 9 && j <= 11 && (i <= 5 || i >= 15)))) {
+					if (start[i][j] == 0) {
+						int[][] temp = new int[list.length + 1][2];
+						for (int k = 0; k < list.length; k++)
+							temp[k] = list[k];
+						temp[temp.length - 1][0] = j;// j = x
+						temp[temp.length - 1][1] = i;// i = y
+						list = temp;
+					}
+				}
+			}
+		}
 
 		return (list);
 	}
