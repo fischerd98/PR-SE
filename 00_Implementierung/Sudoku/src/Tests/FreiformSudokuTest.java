@@ -54,10 +54,10 @@ class FreiformSudokuTest {
 
 	
 	@Test
-	public void TestCeckValFreiform() {
+	public void testCheckValFreiform() {
 
 		assertFalse(s.checkVal(4,1,9));
-		assertTrue(s.checkVal(7,7,9));
+		assertTrue(s.checkVal(0,0,3));
 //		assertTrue(s.checkVal(8,5,1));
 //		assertTrue(s.checkVal(0,8,4));
 //		assertTrue(s.checkVal(3,3,8));
@@ -70,7 +70,7 @@ class FreiformSudokuTest {
 
 	}
 //	@Test
-//	public void TestGetEmptyFields() {
+//	public void testGetEmptyFields() {
 //
 //		assertFalse(s.checkVal(4,1,9));
 //		assertFalse(s.checkVal(1,4,9));
