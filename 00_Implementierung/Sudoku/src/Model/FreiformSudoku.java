@@ -48,8 +48,6 @@ public class FreiformSudoku extends Sudoku {
 
 	public void readSudoku(String path) {
 
-		System.out.println("Read");
-
 		List<List<String>> records = new ArrayList<List<String>>();
 
 		try (CSVReader csvReader = new CSVReader(new FileReader(path));) {
@@ -65,9 +63,6 @@ public class FreiformSudoku extends Sudoku {
 			fieldConstruction = toIntArray(records.subList(0, 9));
 			start = toIntArray(records.subList(10, 19));
 		}
-
-		System.out.println();
-
 	}
 
 //	public boolean checkVal(int posX, int posY, int num) {
@@ -109,10 +104,6 @@ public class FreiformSudoku extends Sudoku {
 		}
 
 		return count < 1;
-	}
-
-	public void saveSudoku() {
-		saveSudoku(sli.getName());
 	}
 
 	public Iterable<String[]> toStringArr(int[][] arr) {

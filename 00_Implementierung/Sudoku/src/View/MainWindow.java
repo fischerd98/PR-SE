@@ -218,8 +218,6 @@ public class MainWindow {
 
 	public void selectionChanged() {
 
-		System.out.println(selectedForm + " " + selectedLevel);
-
 		comboBox_sudokus.removeAllItems();
 
 		for (SudokuListItems s : model.loadSudokus(selectedForm, selectedLevel)) {

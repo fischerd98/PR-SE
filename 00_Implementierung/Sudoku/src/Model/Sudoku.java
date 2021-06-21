@@ -72,12 +72,12 @@ public abstract class Sudoku {
 	public abstract boolean checkComplete();
 
 	public void saveSudoku() {
-		saveSudoku(sli.getName());
+		saveSudoku(sli.getSudokuPath());
 	}
 
 	public void saveSudoku(String filename) {
 
-		try (CSVWriter writer = new CSVWriter(new FileWriter(filename + ".csv"));) {
+		try (CSVWriter writer = new CSVWriter(new FileWriter(filename));) {
 
 			writer.writeAll(toStringArr(start));
 			writer.flush();
@@ -97,9 +97,7 @@ public abstract class Sudoku {
 		for (int i = 0; i < records.size(); i++) {
 			for (int y = 0; y < records.get(i).size(); y++) {
 				arr[i][y] = Integer.parseInt(records.get(i).get(y).trim());
-				System.out.print(arr[i][y] + " ");
 			}
-			System.out.println();
 		}
 
 		return arr;

@@ -133,8 +133,6 @@ public class NinjaSudokuWindow extends JFrame {
 					int x = emptyFields[idx][1];
 					int y = emptyFields[idx][0];
 
-					System.out.println(idx + " " + x + " " + y);
-
 					boolean solvable = false;
 
 					solvable = ninjaSudoku.solveSudokuNextStep(x, y);
@@ -281,8 +279,6 @@ public class NinjaSudokuWindow extends JFrame {
 					} else {
 						field[i][y].setBackground(Color.LIGHT_GRAY);
 					}
-
-					System.out.println(startX + " " + startY);
 				}
 			}
 		}
@@ -357,12 +353,6 @@ public class NinjaSudokuWindow extends JFrame {
 		actY = posY;
 
 		field[posX][posY].setBackground(Color.RED);
-
-		for (int i : ninjaSudoku.getFieldNums(posX, posY)) {
-			System.out.print(i + "  ");
-		}
-
-		System.out.println("kkkkk");
 
 		enableDisableInputButtons();
 	}

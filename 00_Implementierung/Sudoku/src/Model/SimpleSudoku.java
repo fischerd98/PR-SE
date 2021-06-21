@@ -37,9 +37,6 @@ public class SimpleSudoku extends Sudoku {
 	public SimpleSudoku(int[][] arr) {
 		this.start = arr;
 	}
-
-
-	
 	
 	public boolean checkVal(int posX, int posY, int num) {
 
@@ -49,14 +46,12 @@ public class SimpleSudoku extends Sudoku {
 				return false;
 			}
 		}
-
 		// Zeile
 		for (int i = 0; i < 9; i++) {
 			if (start[posX][i] == num) {
 				return false;
 			}
 		}
-
 		return check9SquareNumPossible(posX, posY, num);
 	}
 
@@ -128,14 +123,8 @@ public class SimpleSudoku extends Sudoku {
 				}
 			}
 		}
-
 		return true;
 	}
-
-	public void saveSudoku() {
-		saveSudoku("SimpleSudoku\\angefangen\\" + sli.getName());
-	}
-
 
 	public void readSudoku(String path) {
 
@@ -167,7 +156,6 @@ public class SimpleSudoku extends Sudoku {
 				return (false);
 			}
 		}
-
 		return (true);
 	}
 }

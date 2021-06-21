@@ -181,8 +181,6 @@ public class SudokuWindow extends JFrame {
 					emptyFields = ff.getEmptyFields();
 				}
 				
-				System.out.println(emptyFields.length);
-				
 				if(emptyFields.length > 0) {
 					
 					int idx = (int) (Math.random() * (emptyFields.length - 1));
@@ -191,8 +189,6 @@ public class SudokuWindow extends JFrame {
 					// Achtung: gedreht
 					int x = emptyFields[idx][1];
 					int y = emptyFields[idx][0];
-					
-					System.out.println(idx + " " + x + " " + y);
 					
 					boolean solvable = false;
 					
@@ -205,7 +201,6 @@ public class SudokuWindow extends JFrame {
 					
 
 					if (!solvable) {
-						System.out.println("nicht lösbar");
 						fillField();
 						setBtnColors();						
 					} else {

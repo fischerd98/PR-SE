@@ -19,7 +19,7 @@ public class NinjaSudoku extends Sudoku {
 
 		readSudoku(sli.getSudokuPath());
 	}
-
+	
 	// Konstruktor zu Testzwecken
 	public NinjaSudoku() {
 
@@ -195,8 +195,6 @@ public class NinjaSudoku extends Sudoku {
 		for (int i = 0; i < fields.size(); i++) {
 			if (fields.get(i) == 1) {
 
-				System.out.println("Test");
-
 				for (int y = 0; y <= 8; y++) {
 					if (start[y][posY] == num) {
 						return false;
@@ -239,19 +237,6 @@ public class NinjaSudoku extends Sudoku {
 	public boolean checkComplete() {
 		// noch nicht implementiert
 		return false;
-	}
-
-
-	public void saveSudoku(String filename) {
-
-		try (CSVWriter writer = new CSVWriter(new FileWriter(filename));) {
-
-			writer.writeAll(toStringArr(start));
-			writer.flush();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void readSudoku(String path) {
