@@ -1,6 +1,5 @@
 package View;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -18,9 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Model.FreiformSudoku;
 import Model.NinjaSudoku;
-import Model.SimpleSudoku;
 import Model.SudokuHistoryItem;
 import Model.SudokuListItems;
 
@@ -77,28 +74,14 @@ public class NinjaSudokuWindow extends JFrame {
 
 		ninjaSudoku = new NinjaSudoku();
 
-//		setColors();
-//		
-//		if (sudokuitems == null || (isSs && isFf) || (!isSs && !isFf)) {
-//			ss = new SimpleSudoku();
-//		} else {
-//			if(isSs && !isFf) {
-//				ss = new SimpleSudoku(sudokuitems);
-//				ssGame = true;
-//				ffGame = false;
-//			} else {
-//				ff = new FreiformSudoku(sudokuitems);
-//				//ff = new FreiformSudoku();
-//				ffGame = true;
-//				ssGame = false;
-//			}
-//			
-//			continueGame = true;
-//		}
+		if (sudokuitems != null) {
+			ninjaSudoku = new NinjaSudoku(sudokuitems);
+			continueGame = true;
+		}
 
-//		if(!continueGame) {
-//			ss = new SimpleSudoku();
-//		}
+		if (!continueGame) {
+			ninjaSudoku = new NinjaSudoku();
+		}
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1205, 851);
@@ -114,11 +97,7 @@ public class NinjaSudokuWindow extends JFrame {
 		JMenuItem mntmNewMenuItem = new JMenuItem("Spielstand Speichern");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if(ss != null) {
-//					ss.saveSudoku();
-//				} else {
-//					ff.saveSudoku();
-//				}				
+				ninjaSudoku.saveSudoku();
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
@@ -126,9 +105,7 @@ public class NinjaSudokuWindow extends JFrame {
 		JMenuItem mntmNewMenuItem2 = new JMenuItem("Zurück zum Hauptmenü");
 		mntmNewMenuItem2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				dispose();
-
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem2);
@@ -169,52 +146,33 @@ public class NinjaSudokuWindow extends JFrame {
 
 				int[][] emptyFields = null;
 
-//				if(ss != null) {
-//					emptyFields = ss.getEmptyFields();
-//				}
-//				else {
-//					emptyFields = ff.getEmptyFields();
-//				}
-//				
-//				System.out.println(emptyFields.length);
-//				
-//				if(emptyFields.length > 0) {
-//					
-//					int idx = (int) (Math.random() * (emptyFields.length - 1));
-//					
-//					
-//					// Achtung: gedreht
-//					int x = emptyFields[idx][1];
-//					int y = emptyFields[idx][0];
-//					
-//					System.out.println(idx + " " + x + " " + y);
-//					
-//					boolean solvable = false;
-//					
-//					if(ss != null) {
-//						solvable = ss.solveSudokuNextStep(x, y);
-//					}
-//					else {
-//						solvable = ff.solveSudokuNextStep(x, y);
-//					}
-//					
-//
-//					if (!solvable) {
-//						System.out.println("nicht lösbar");
-//						fillField();
-//						setBtnColors();						
-//					} else {
-//						fillField();
-//						setBtnColors();
-//						
-//						if(ss != null) {
-//							lbl_hints.setText(ss.incrementCountHints() + "");
-//						}
-//						else {
-//							lbl_hints.setText(ff.incrementCountHints() + "");
-//						}
-//					}
-//			}	
+				emptyFields = ninjaSudoku.getEmptyFields();
+
+				if (emptyFields.length > 0) {
+
+					int idx = (int) (Math.random() * (emptyFields.length - 1));
+
+					// Achtung: gedreht
+					int x = emptyFields[idx][1];
+					int y = emptyFields[idx][0];
+
+					System.out.println(idx + " " + x + " " + y);
+
+					boolean solvable = false;
+
+					solvable = ninjaSudoku.solveSudokuNextStep(x, y);
+
+					if (!solvable) {
+						System.out.println("nicht lösbar");
+						fillField();
+						setBtnColors();
+					} else {
+						fillField();
+						setBtnColors();
+
+						lbl_hints.setText(ninjaSudoku.incrementCountHints() + "");
+					}
+				}
 			}
 		});
 		mnSolver.add(mntmNchstenSchritt);
@@ -513,11 +471,11 @@ public class NinjaSudokuWindow extends JFrame {
 
 		if (ninjaSudoku.checkVal(posX, posY, num)) {
 
-//				SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, ss.getVal(posX, posY));
-			SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, 0);
+				SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, ninjaSudoku.getVal(posX, posY));
+//			SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, 0);
 			history.add(sh);
 
-//				ss.setField(posX, posY, num);
+				ninjaSudoku.setField(posX, posY, num);
 
 			field[posX][posY].setText(num + "");
 		}
@@ -530,17 +488,13 @@ public class NinjaSudokuWindow extends JFrame {
 
 		// if (ss.checkVal(posX, posY, num)) {
 
-//		if (ss != null) {
-//			ss.setField(posX, posY, num);
-//		} else {
-//			ff.setField(posX, posY, num);
-//		}
-//
-//		if (num == 0) {
-//			field[posX][posY].setText("");
-//		} else {
-//			field[posX][posY].setText(num + "");
-//		}
+		ninjaSudoku.setField(posX, posY, num);
+
+		if (num == 0) {
+			field[posX][posY].setText("");
+		} else {
+			field[posX][posY].setText(num + "");
+		}
 
 		// }
 	}
