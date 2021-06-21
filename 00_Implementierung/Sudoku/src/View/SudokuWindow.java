@@ -449,18 +449,6 @@ public class SudokuWindow extends JFrame {
 					Color col = c[ff.getFieldConstruction()[i][y] - 1];
 					
 					field[i][y].setBackground(col);
-					
-//					int startX = i / 3;
-//					startX *= 3;
-//
-//					int startY = y / 3;
-//					startY *= 3;
-//
-//					if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
-//						field[i][y].setBackground(Color.WHITE);
-//					} else {
-//						field[i][y].setBackground(Color.LIGHT_GRAY);
-//					}
 
 				}
 			}

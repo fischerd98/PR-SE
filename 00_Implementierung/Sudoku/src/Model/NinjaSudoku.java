@@ -1,17 +1,10 @@
 package Model;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JButton;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -372,48 +365,48 @@ public class NinjaSudoku extends Sudoku {
 //	}
 
 	public void saveSudoku() {
-		// saveSudoku("SimpleSudoku\\angefangen\\" + sli.getName());
+		saveSudoku(sli.getSudokuPath());
 	}
 
 	public void saveSudoku(String filename) {
 
-//		try (CSVWriter writer = new CSVWriter(new FileWriter(filename + ".csv"));) {
-//
-//			writer.writeAll(toStringArr(start));
-//			writer.flush();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try (CSVWriter writer = new CSVWriter(new FileWriter(filename));) {
+
+			writer.writeAll(toStringArr(start));
+			writer.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void readSudoku(String path) {
 
-//		List<List<String>> records = new ArrayList<List<String>>();
-//
-//		try (CSVReader csvReader = new CSVReader(new FileReader(path));) {
-//			String[] values = null;
-//			while ((values = csvReader.readNext()) != null) {
-//				records.add(Arrays.asList(values));
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		start = toIntArray(records);
+		List<List<String>> records = new ArrayList<List<String>>();
+
+		try (CSVReader csvReader = new CSVReader(new FileReader(path));) {
+			String[] values = null;
+			while ((values = csvReader.readNext()) != null) {
+				records.add(Arrays.asList(values));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		start = toIntArray(records);
 	}
 
 	public int[][] toIntArray(List<List<String>> records) {
 
 		int[][] arr = new int[records.size()][records.size()];
 
-//		for (int i = 0; i < records.size(); i++) {
-//			for (int y = 0; y < records.get(i).size(); y++) {
-//				arr[i][y] = Integer.parseInt(records.get(i).get(y).trim());
-//				System.out.print(arr[i][y] + " ");
-//			}
-//			System.out.println();
-//		}
+		for (int i = 0; i < records.size(); i++) {
+			for (int y = 0; y < records.get(i).size(); y++) {
+				arr[i][y] = Integer.parseInt(records.get(i).get(y).trim());
+				System.out.print(arr[i][y] + " ");
+			}
+			System.out.println();
+		}
 
 		return arr;
 	}
@@ -450,41 +443,59 @@ public class NinjaSudoku extends Sudoku {
 	public Iterable<String[]> toStringArr(int[][] arr) {
 
 		List<String[]> list = new ArrayList<>();
-//		String[] arrS;
+		String[] arrS;
+
+		for (int i = 0; i < arr.length; i++) {
+
+			arrS = new String[arr[i].length];
+
+			for (int y = 0; y < arr[i].length; y++) {
+				arrS[y] = arr[i][y] + "";
+			}
+
+			list.add(arrS);
+		}
+
+		return list;
+	}
+	
+	
+//	public Iterable<int[]> toIntArr(int[][] arr) {
+//
+//		List<int[]> list = new ArrayList<>();
+//		int[] arrS;
 //
 //		for (int i = 0; i < arr.length; i++) {
 //
-//			arrS = new String[arr[i].length];
+//			arrS = new int[arr[i].length];
 //
 //			for (int y = 0; y < arr[i].length; y++) {
-//				arrS[y] = arr[i][y] + "";
+//				arrS[y] = arr[i][y];
 //			}
 //
 //			list.add(arrS);
 //		}
-
-		return list;
-	}
+//
+//		return list;
+//	}
 
 	public boolean solveSudokuNextStep(int x, int y) {
 
-//		int[][] copiedArray = new int[start.length][start[0].length];
-//		
-//		for (int i = 0; i < copiedArray.length; i++)
-//			copiedArray[i] = Arrays.copyOf(start[i], start[i].length);
-//				
-//		int[][] empty = getEmptyFields();
-//
-//		boolean solvable = solveSudokuRec(copiedArray, empty, 0);
-//		
-//		start[x][y] = copiedArray[x][y];
-// 		
-//		int[] arr = new int[]{x, y};
-//		hints.add(arr);
-//		
-//		return solvable;
+		int[][] copiedArray = new int[start.length][start[0].length];
+		
+		for (int i = 0; i < copiedArray.length; i++)
+			copiedArray[i] = Arrays.copyOf(start[i], start[i].length);
+				
+		int[][] empty = getEmptyFields();
 
-		return false;
+		boolean solvable = solveSudokuRec(copiedArray, empty, 0);
+		
+		start[x][y] = copiedArray[x][y];
+ 		
+		int[] arr = new int[]{x, y};
+		hints.add(arr);
+		
+		return solvable;
 	}
 
 	public boolean solveSudoku() {
@@ -523,10 +534,6 @@ public class NinjaSudoku extends Sudoku {
 
 	// prüft, ob eine Zahl korrekt ist
 	public boolean numberIsValid(int x, int y, int value) {
-
-//		if (sudoku[y][x] != 0) {// Falls ein Feld schon belegt ist
-//			return (false);
-//		}
 
 		if (!this.checkColumn(y, x, value)) {
 			return false;

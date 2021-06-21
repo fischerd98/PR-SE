@@ -91,6 +91,21 @@ public class Model {
 	public List<SudokuListItems> loadNinjaSudokus(){
 		
 		List<SudokuListItems> list = new ArrayList<>();
+
+		File f = new File(link);
+
+		if (f.isDirectory()) {
+
+			File[] arr = f.listFiles();
+
+			for (File f1 : arr) {
+
+				String sudokuPath = f1.getName();
+				String[] arrrr = sudokuPath.split("\\.");
+
+				list.add(new SudokuListItems(arrrr[0], link + "\\" + sudokuPath));
+			}
+		}
 		
 		return list;
 	}
