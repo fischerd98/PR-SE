@@ -45,29 +45,6 @@ public class NinjaSudokuWindow extends JFrame {
 	ArrayList<SudokuHistoryItem> history = new ArrayList<>();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NinjaSudokuWindow frame = new NinjaSudokuWindow(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-//	public SudokuWindow(SudokuListItems sudokuitem) {
-//		ss = new SimpleSudoku(sudokuitem);
-//		continueGame = true;
-//		
-//		SudokuWindow();
-//	}
-
-	/**
 	 * Create the frame.
 	 */
 	public NinjaSudokuWindow(SudokuListItems sudokuitems) {
@@ -201,7 +178,7 @@ public class NinjaSudokuWindow extends JFrame {
 		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
 		mntmPrfen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				checkComplete();
+				//checkComplete();
 			}
 		});
 		mnSolver.add(mntmPrfen);
@@ -218,45 +195,9 @@ public class NinjaSudokuWindow extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-//		JButton btnCheckComplete = new JButton("Pr\u00FCfen");
-//		btnCheckComplete.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				SudokuWindow.this.checkComplete();
-//
-//			}
-//		});
-//		btnCheckComplete.setBounds(265, 604, 89, 23);
-//		contentPane.add(btnCheckComplete);
-
 		lblState = new JLabel("Weitermachen!");
 		lblState.setBounds(994, 463, 136, 14);
 		contentPane.add(lblState);
-
-//		JButton btn_deleteChoice = new JButton("Auwahl l\u00F6schen");
-//		btn_deleteChoice.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				actX = -1;
-//				actY = -1;
-//				setBtnColors();
-//				enableDisableInputButtons();
-//				setBtnColors();
-//			}
-//		});
-//		btn_deleteChoice.setBounds(265, 638, 165, 23);
-//		contentPane.add(btn_deleteChoice);
-
-//		JButton btn_undo = new JButton("R\u00FCckg\u00E4ngig");
-//		btn_undo.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//				if (history.size() >= 1) {
-//					SudokuHistoryItem sh = history.remove(history.size() - 1);
-//					setFieldUndo(sh.getX(), sh.getY(), sh.getvBefore());
-//				}
-//			}
-//		});
-//		btn_undo.setBounds(265, 573, 89, 23);
-//		contentPane.add(btn_undo);
 
 		JLabel lblNewLabel = new JLabel("Erhaltene Hinweise:");
 		lblNewLabel.setFont(lblNewLabel.getFont().deriveFont(lblNewLabel.getFont().getStyle() | Font.BOLD));
@@ -273,10 +214,6 @@ public class NinjaSudokuWindow extends JFrame {
 		contentPane.add(lblNewLabel_1);
 
 		field = new JButton[21][21];
-
-//		JLabel lblNewLabel = new JLabel("9x9 Sudoku");
-//		lblNewLabel.setBounds(179, 59, 98, 14);
-//		contentPane.add(lblNewLabel);
 
 		initField();
 		initInputButtons();
@@ -435,11 +372,7 @@ public class NinjaSudokuWindow extends JFrame {
 		int num = Integer.parseInt(val);
 
 		setField(actX, actY, num);
-
-		// this.initField();
-
 		ninjaSudoku.setField(actX, actY, num);
-
 	}
 
 	public void fillField() {
@@ -471,11 +404,10 @@ public class NinjaSudokuWindow extends JFrame {
 
 		if (ninjaSudoku.checkVal(posX, posY, num)) {
 
-				SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, ninjaSudoku.getVal(posX, posY));
-//			SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, 0);
+			SudokuHistoryItem sh = new SudokuHistoryItem(posX, posY, num, ninjaSudoku.getVal(posX, posY));
 			history.add(sh);
 
-				ninjaSudoku.setField(posX, posY, num);
+			ninjaSudoku.setField(posX, posY, num);
 
 			field[posX][posY].setText(num + "");
 		}
@@ -484,10 +416,6 @@ public class NinjaSudokuWindow extends JFrame {
 
 	public void setFieldUndo(int posX, int posY, int num) {
 
-		// this.reset
-
-		// if (ss.checkVal(posX, posY, num)) {
-
 		ninjaSudoku.setField(posX, posY, num);
 
 		if (num == 0) {
@@ -495,23 +423,5 @@ public class NinjaSudokuWindow extends JFrame {
 		} else {
 			field[posX][posY].setText(num + "");
 		}
-
-		// }
-	}
-
-	public void checkComplete() {
-
-//		boolean state = false;
-//
-//		if (ss != null) {
-//			state = ss.checkComplete();
-//		} else {
-//			// state = ff.checkComplete();
-//		}
-//
-//		if (state)
-//			lblState.setText("Fertig!");
-//		else
-//			lblState.setText("Weitermachen!");
 	}
 }

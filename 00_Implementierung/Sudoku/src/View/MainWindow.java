@@ -21,8 +21,6 @@ public class MainWindow {
 	private JFrame frame;
 	private Model model;
 
-	// private JComboBox comboBox_weiterspielen;
-	// private JComboBox comboBox_neu;
 	private JComboBox comboBox_sudokus;
 
 	private ButtonGroup gbForm;
@@ -61,7 +59,7 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 382, 574);
+		frame.setBounds(100, 100, 382, 394);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -106,8 +104,6 @@ public class MainWindow {
 					w.setVisible(true);
 				} else if (selectedForm == 1) {
 
-					// SudokuListItems k = (SudokuListItems) comboBox_sudokus.getSelectedItem();
-
 					SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_sudokus.getSelectedItem(), false,
 							true);
 					w.setVisible(true);
@@ -143,8 +139,8 @@ public class MainWindow {
 		JButton btnNewButton_3 = new JButton("Sudoku erstellen");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CreateSudokuWindow csw = new CreateSudokuWindow();
-				csw.setVisible(true);
+				//CreateSudokuWindow csw = new CreateSudokuWindow();
+				//csw.setVisible(true);
 			}
 		});
 		btnNewButton_3.setBounds(30, 271, 309, 23);
@@ -229,6 +225,5 @@ public class MainWindow {
 		for (SudokuListItems s : model.loadSudokus(selectedForm, selectedLevel)) {
 			comboBox_sudokus.addItem(s);
 		}
-
 	}
 }

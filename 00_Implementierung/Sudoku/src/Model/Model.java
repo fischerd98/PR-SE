@@ -8,13 +8,6 @@ public class Model {
 
 	private String link;
 	
-	public Model() {
-		// loadSimpleSudokus();
-	}
-
-	// 0 = 9x9; 1 = Freiform; // other = Ninja
-	// 0 = Easy; 1 = Medium; // other = Hard
-	
 	public List<SudokuListItems> loadSudokus(int form, int level) {
 		
 		link = "Sudokus";
