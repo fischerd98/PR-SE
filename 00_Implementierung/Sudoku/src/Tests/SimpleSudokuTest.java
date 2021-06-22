@@ -41,7 +41,7 @@ public class SimpleSudokuTest {
 
 	@AfterEach
 	public void clean(){
-		s.setGame(start);
+		s.setStart(start);
 	}
 
 	@Test

@@ -133,7 +133,7 @@ public class MainWindow {
 
 		JLabel lblNewLabel = new JLabel("Sudoku");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(141, 21, 65, 34);
+		lblNewLabel.setBounds(141, 21, 109, 34);
 		frame.getContentPane().add(lblNewLabel);
 
 		JButton btnNewButton_3 = new JButton("Sudoku erstellen");
