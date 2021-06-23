@@ -44,11 +44,12 @@ class FreiformSudokuTest {
 	public void setUp() {
 		
 		s = new FreiformSudoku();
+		s.setStart(start);
     }
 
 	@AfterEach
 	public void clean(){
-		s.setStart(start);
+		
 		s.setFieldConstruction(fieldConstruction);
 	}
 

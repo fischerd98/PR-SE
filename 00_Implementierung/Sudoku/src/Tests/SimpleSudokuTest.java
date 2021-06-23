@@ -83,7 +83,7 @@ public class SimpleSudokuTest {
 	@Test
 	public void testSolve() {
 
-		assertTrue(s.solveSudoku());  
+		assertTrue(s.solveSudoku()); 
 		
 	}
 	//check Complete
