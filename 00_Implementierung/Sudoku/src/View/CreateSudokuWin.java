@@ -1,29 +1,31 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Model.FreiformSudoku;
 import Model.SimpleSudoku;
 import Model.SudokuHistoryItem;
-import Model.SudokuListItems;
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Font;
-import java.awt.Insets;
-
-public class SudokuWindow extends JFrame {
+public class CreateSudokuWin extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -31,14 +33,13 @@ public class SudokuWindow extends JFrame {
 	private JButton[][] field;
 	private JButton[] inputButtons;
 
-	private JLabel lblState;
-	private JLabel lbl_hints;
-
 	private SimpleSudoku ss;
 	private FreiformSudoku ff;
 
 	private boolean ssGame = false;
 	private boolean ffGame = false;
+
+	private int selectedLevel = 0;
 
 	private boolean continueGame = false;
 
@@ -51,32 +52,27 @@ public class SudokuWindow extends JFrame {
 	private Color actColor;
 
 	ArrayList<SudokuHistoryItem> history = new ArrayList<>();
+	private JTextField textField_Name;
 
 	/**
 	 * Create the frame.
 	 */
-	public SudokuWindow(SudokuListItems sudokuitems, boolean isSs, boolean isFf) {
+	public CreateSudokuWin(boolean isSs, boolean isFf) {
 
 		setColors();
 
-		if (sudokuitems == null || (isSs && isFf) || (!isSs && !isFf)) {
+		if (isSs && !isFf) {
 			ss = new SimpleSudoku();
+			ssGame = true;
+			ffGame = false;
 		} else {
-			if (isSs && !isFf) {
-				ss = new SimpleSudoku(sudokuitems);
-				ssGame = true;
-				ffGame = false;
-			} else {
-				ff = new FreiformSudoku(sudokuitems);
-				ffGame = true;
-				ssGame = false;
-			}
-
-			continueGame = true;
+			ff = new FreiformSudoku();
+			ffGame = true;
+			ssGame = false;
 		}
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 514, 531);
+		setBounds(100, 100, 514, 683);
 
 		setResizable(false);
 
@@ -86,14 +82,32 @@ public class SudokuWindow extends JFrame {
 		JMenu mnNewMenu = new JMenu("Datei");
 		menuBar.add(mnNewMenu);
 
-		JMenuItem mntmNewMenuItem = new JMenuItem("Spielstand Speichern");
+		JMenuItem mntmNewMenuItem = new JMenuItem("Spielvorlage Speichern");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (ss != null) {
-					ss.saveSudoku();
-				} else {
-					ff.saveSudoku();
+
+				String name = textField_Name.getText();
+				String schwierigkeit = "new";
+
+				if (!name.equals("")) {
+					if (selectedLevel == 0) {
+						schwierigkeit = "Anfaenger";
+					} else if (selectedLevel == 1) {
+						schwierigkeit = "Fortgeschritten";
+					} else if (selectedLevel == 2) {
+						schwierigkeit = "Profi";
+					}
+
+					if (ss != null) {
+
+						String link = "Sudokus\\SimpleSudoku\\" + schwierigkeit + "\\" + name + ".csv";
+
+						ss.saveNewSudoku(link);
+					} else {
+						ff.saveSudoku();
+					}
 				}
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
@@ -135,91 +149,6 @@ public class SudokuWindow extends JFrame {
 		});
 		mnBearbeiten.add(mntmAuswahlLschen);
 
-		JMenu mnSolver = new JMenu("Solver");
-		menuBar.add(mnSolver);
-
-		JMenuItem mntmNchstenSchritt = new JMenuItem("Hinweis");
-		mntmNchstenSchritt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				int[][] emptyFields = null;
-
-				if (ss != null) {
-					emptyFields = ss.getEmptyFields();
-				} else {
-					emptyFields = ff.getEmptyFields();
-				}
-
-				if (emptyFields.length > 0) {
-
-					int idx = (int) (Math.random() * (emptyFields.length - 1));
-
-					// Achtung: gedreht
-					int x = emptyFields[idx][1];
-					int y = emptyFields[idx][0];
-
-					boolean solvable = false;
-
-					if (ss != null) {
-						solvable = ss.solveSudokuNextStep(x, y);
-					} else {
-						solvable = ff.solveSudokuNextStep(x, y);
-					}
-
-					if (!solvable) {
-						fillField();
-						setBtnColors();
-					} else {
-						fillField();
-						setBtnColors();
-
-						if (ss != null) {
-							lbl_hints.setText(ss.incrementCountHints() + "");
-						} else {
-							lbl_hints.setText(ff.incrementCountHints() + "");
-						}
-					}
-				}
-			}
-		});
-		mnSolver.add(mntmNchstenSchritt);
-
-		JMenuItem mntmKomplettLsen = new JMenuItem("L\u00F6sen");
-		mntmKomplettLsen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				boolean solvable = false;
-
-				if (ss != null) {
-					solvable = ss.solveSudoku();
-				} else {
-					solvable = ff.solveSudoku();
-				}
-
-				if (solvable) {
-					fillField();
-					setBtnColors();
-					if (ss != null) {
-						lbl_hints.setText(ss.getCountHints() + "");
-					} else {
-						lbl_hints.setText(ff.getCountHints() + "");
-					}
-
-				} else {
-					System.out.println("keine Lösung gefunden");
-				}
-			}
-		});
-		mnSolver.add(mntmKomplettLsen);
-
-		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
-		mntmPrfen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SudokuWindow.this.checkComplete();
-			}
-		});
-		mnSolver.add(mntmPrfen);
-
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(Color.white);
@@ -227,28 +156,63 @@ public class SudokuWindow extends JFrame {
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
-		panel.setBounds(10, 55, 400, 400);
+		panel.setBounds(10, 170, 400, 400);
 		panel.setBackground(Color.white);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		lblState = new JLabel("0");
-		lblState.setBounds(286, 30, 50, 14);
-		contentPane.add(lblState);
-
-		lbl_hints = new JLabel("0");
-		lbl_hints.setBounds(172, 30, 21, 14);
-		contentPane.add(lbl_hints);
-
-		JLabel lblNewLabel_1 = new JLabel("Zeit:");
-		lblNewLabel_1.setFont(lblNewLabel_1.getFont().deriveFont(lblNewLabel_1.getFont().getStyle() | Font.BOLD));
-		lblNewLabel_1.setBounds(239, 30, 63, 14);
-		contentPane.add(lblNewLabel_1);
-
-		JLabel lblNewLabel = new JLabel("Erhaltene Hinweise:");
+		JLabel lblNewLabel = new JLabel("Spielname:");
 		lblNewLabel.setBounds(44, 30, 119, 14);
 		contentPane.add(lblNewLabel);
 		lblNewLabel.setFont(lblNewLabel.getFont().deriveFont(lblNewLabel.getFont().getStyle() | Font.BOLD));
+
+		textField_Name = new JTextField();
+		textField_Name.setBounds(204, 27, 156, 20);
+		contentPane.add(textField_Name);
+		textField_Name.setColumns(10);
+
+		JLabel lblSchwierigkeitsgrad = new JLabel("Schwierigkeitsgrad:");
+		lblSchwierigkeitsgrad.setFont(
+				lblSchwierigkeitsgrad.getFont().deriveFont(lblSchwierigkeitsgrad.getFont().getStyle() | Font.BOLD));
+		lblSchwierigkeitsgrad.setBounds(44, 69, 119, 14);
+		contentPane.add(lblSchwierigkeitsgrad);
+
+		ButtonGroup bg = new ButtonGroup();
+
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Einfach");
+		rdbtnNewRadioButton.setBounds(204, 65, 156, 23);
+		bg.add(rdbtnNewRadioButton);
+		rdbtnNewRadioButton.setSelected(true);
+		contentPane.add(rdbtnNewRadioButton);
+
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Mittel");
+		rdbtnNewRadioButton_1.setBounds(204, 91, 156, 23);
+		bg.add(rdbtnNewRadioButton_1);
+		contentPane.add(rdbtnNewRadioButton_1);
+
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Schwer");
+		rdbtnNewRadioButton_2.setBounds(204, 117, 156, 23);
+		bg.add(rdbtnNewRadioButton_2);
+		contentPane.add(rdbtnNewRadioButton_2);
+
+		ActionListener rdbtnActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				JRadioButton rb = (JRadioButton) actionEvent.getSource();
+
+				switch (rb.getText()) {
+				case "Einfach":
+					selectedLevel = 0;
+					break;
+				case "Mittel":
+					selectedLevel = 1;
+					break;
+				case "Schwer":
+					selectedLevel = 2;
+					break;
+				}
+			}
+		};
 
 		field = new JButton[9][9];
 
@@ -326,7 +290,7 @@ public class SudokuWindow extends JFrame {
 					} else {
 						field[i][y].setBackground(Color.LIGHT_GRAY);
 					}
-					
+
 					field[i][y].setForeground(Color.BLACK);
 				}
 			}
@@ -349,7 +313,7 @@ public class SudokuWindow extends JFrame {
 		int initialPosY = 430;
 
 		int posX = initialPosY;
-		int posY = 65;
+		int posY = 180;
 		int width = 43;
 
 		int count = 1;
@@ -497,21 +461,5 @@ public class SudokuWindow extends JFrame {
 		}
 
 		// }
-	}
-
-	public void checkComplete() {
-
-		boolean state = false;
-
-		if (ss != null) {
-			state = ss.checkComplete();
-		} else {
-			// state = ff.checkComplete();
-		}
-
-		if (state)
-			lblState.setText("Fertig!");
-		else
-			lblState.setText("Weitermachen!");
 	}
 }

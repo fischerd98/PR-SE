@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +22,10 @@ import javax.swing.border.EmptyBorder;
 import Model.NinjaSudoku;
 import Model.SudokuHistoryItem;
 import Model.SudokuListItems;
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
-public class NinjaSudokuWindow extends JFrame {
+public class CreateNinjaSudokuWin extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -29,10 +33,9 @@ public class NinjaSudokuWindow extends JFrame {
 	private JButton[][] field;
 	private JButton[] inputButtons;
 
-	private JLabel lblState;
-	private JLabel lbl_hints;
-
 	private NinjaSudoku ninjaSudoku;
+
+	private int selectedLevel = 0;
 
 	private boolean continueGame = false;
 
@@ -43,11 +46,12 @@ public class NinjaSudokuWindow extends JFrame {
 	private Color actColor;
 
 	ArrayList<SudokuHistoryItem> history = new ArrayList<>();
+	private JTextField textField_Name;
 
 	/**
 	 * Create the frame.
 	 */
-	public NinjaSudokuWindow(SudokuListItems sudokuitems) {
+	public CreateNinjaSudokuWin(SudokuListItems sudokuitems) {
 
 		ninjaSudoku = new NinjaSudoku();
 
@@ -61,7 +65,7 @@ public class NinjaSudokuWindow extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 838, 917);
+		setBounds(100, 100, 838, 1007);
 
 		setResizable(false);
 
@@ -74,7 +78,24 @@ public class NinjaSudokuWindow extends JFrame {
 		JMenuItem mntmNewMenuItem = new JMenuItem("Spielstand Speichern");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ninjaSudoku.saveSudoku();
+
+				String name = textField_Name.getText();
+				String schwierigkeit = "new";
+
+				if (!name.equals("")) {
+					if (selectedLevel == 0) {
+						schwierigkeit = "Anfaenger";
+					} else if (selectedLevel == 1) {
+						schwierigkeit = "Fortgeschritten";
+					} else if (selectedLevel == 2) {
+						schwierigkeit = "Profi";
+					}
+
+					String link = "Sudokus\\NinjaSudoku\\" + schwierigkeit + "\\" + name + ".csv";
+					
+					ninjaSudoku.saveNewSudoku(link);
+				}
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
@@ -114,73 +135,6 @@ public class NinjaSudokuWindow extends JFrame {
 		});
 		mnBearbeiten.add(mntmAuswahlLschen);
 
-		JMenu mnSolver = new JMenu("Solver");
-		menuBar.add(mnSolver);
-
-		JMenuItem mntmNchstenSchritt = new JMenuItem("Hinweis");
-		mntmNchstenSchritt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				int[][] emptyFields = null;
-
-				emptyFields = ninjaSudoku.getEmptyFields();
-
-				if (emptyFields.length > 0) {
-
-					int idx = (int) (Math.random() * (emptyFields.length - 1));
-
-					// Achtung: gedreht
-					int x = emptyFields[idx][1];
-					int y = emptyFields[idx][0];
-
-					boolean solvable = false;
-
-					solvable = ninjaSudoku.solveSudokuNextStep(x, y);
-
-					if (!solvable) {
-						System.out.println("nicht lösbar");
-						fillField();
-						setBtnColors();
-					} else {
-						fillField();
-						setBtnColors();
-
-						lbl_hints.setText(ninjaSudoku.incrementCountHints() + "");
-					}
-				}
-			}
-		});
-		mnSolver.add(mntmNchstenSchritt);
-
-		JMenuItem mntmKomplettLsen = new JMenuItem("L\u00F6sen");
-		mntmKomplettLsen.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				boolean solvable = false;
-
-				solvable = ninjaSudoku.solveSudoku();
-
-				if (solvable) {
-					fillField();
-					setBtnColors();
-					lbl_hints.setText(ninjaSudoku.getCountHints() + "");
-
-				} else {
-					System.out.println("keine Lösung gefunden");
-				}
-			}
-		});
-		mnSolver.add(mntmKomplettLsen);
-
-		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
-		mntmPrfen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// checkComplete();
-			}
-		});
-		mnSolver.add(mntmPrfen);
-
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(Color.white);
@@ -188,28 +142,62 @@ public class NinjaSudokuWindow extends JFrame {
 		contentPane.setLayout(null);
 
 		panel = new JPanel();
-		panel.setBounds(0, 81, 771, 800);
+		panel.setBounds(0, 194, 771, 800);
 		panel.setBackground(Color.white);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		lblState = new JLabel("0");
-		lblState.setBounds(434, 56, 136, 14);
-		contentPane.add(lblState);
-
-		JLabel lblNewLabel = new JLabel("Erhaltene Hinweise:");
+		JLabel lblNewLabel = new JLabel("Name:");
 		lblNewLabel.setFont(lblNewLabel.getFont().deriveFont(lblNewLabel.getFont().getStyle() | Font.BOLD));
-		lblNewLabel.setBounds(73, 56, 136, 14);
+		lblNewLabel.setBounds(73, 56, 53, 14);
 		contentPane.add(lblNewLabel);
 
-		lbl_hints = new JLabel("0");
-		lbl_hints.setBounds(208, 56, 21, 14);
-		contentPane.add(lbl_hints);
-
-		JLabel lblNewLabel_1 = new JLabel("Zeit:");
+		JLabel lblNewLabel_1 = new JLabel("Schwierigkeit:");
 		lblNewLabel_1.setFont(lblNewLabel_1.getFont().deriveFont(lblNewLabel_1.getFont().getStyle() | Font.BOLD));
-		lblNewLabel_1.setBounds(358, 56, 53, 14);
+		lblNewLabel_1.setBounds(358, 56, 88, 14);
 		contentPane.add(lblNewLabel_1);
+
+		textField_Name = new JTextField();
+		textField_Name.setBounds(136, 53, 160, 20);
+		contentPane.add(textField_Name);
+		textField_Name.setColumns(10);
+
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Einfach");
+		rdbtnNewRadioButton.setBounds(465, 52, 129, 23);
+		rdbtnNewRadioButton.setSelected(true);
+		contentPane.add(rdbtnNewRadioButton);
+
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Mittel");
+		rdbtnNewRadioButton_1.setBounds(465, 78, 129, 23);
+		contentPane.add(rdbtnNewRadioButton_1);
+
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("Schwer");
+		rdbtnNewRadioButton_2.setBounds(465, 104, 129, 23);
+		contentPane.add(rdbtnNewRadioButton_2);
+
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(rdbtnNewRadioButton);
+		bg.add(rdbtnNewRadioButton_1);
+		bg.add(rdbtnNewRadioButton_2);
+
+		ActionListener rdbtnActionListener = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				JRadioButton rb = (JRadioButton) actionEvent.getSource();
+
+				switch (rb.getText()) {
+				case "Einfach":
+					selectedLevel = 0;
+					break;
+				case "Mittel":
+					selectedLevel = 1;
+					break;
+				case "Schwer":
+					selectedLevel = 2;
+					break;
+				}
+			}
+		};
 
 		field = new JButton[21][21];
 
@@ -278,7 +266,7 @@ public class NinjaSudokuWindow extends JFrame {
 						field[i][y].setBackground(Color.WHITE);
 					} else {
 						field[i][y].setBackground(Color.LIGHT_GRAY);
-						
+
 					}
 					field[i][y].setForeground(Color.BLACK);
 				}
@@ -310,7 +298,7 @@ public class NinjaSudokuWindow extends JFrame {
 				}
 			});
 			btn.setText(count + "");
-			btn.setBounds(posX, posY, width, width);			
+			btn.setBounds(posX, posY, width, width);
 			btn.setMargin(new Insets(0, 0, 0, 0));
 			btn.setFont(new Font("Arial", Font.BOLD, 24));
 			btn.setForeground(Color.BLACK);
@@ -321,7 +309,7 @@ public class NinjaSudokuWindow extends JFrame {
 			inputButtons[count - 1] = btn;
 
 			count++;
-			
+
 			posY += width;
 			posX = initialPosY;
 		}

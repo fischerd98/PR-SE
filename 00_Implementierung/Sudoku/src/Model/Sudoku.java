@@ -75,6 +75,10 @@ public abstract class Sudoku {
 		saveSudoku(sli.getSudokuPath());
 	}
 
+	public void saveNewSudoku(String name) {
+		saveSudoku(name);
+	}
+	
 	public void saveSudoku(String filename) {
 
 		try (CSVWriter writer = new CSVWriter(new FileWriter(filename));) {

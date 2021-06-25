@@ -21,7 +21,7 @@ import Model.NinjaSudoku;
 import Model.SudokuHistoryItem;
 import Model.SudokuListItems;
 
-public class NinjaSudokuWindow extends JFrame {
+public class CreateNinjaSudokuWindow extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -34,6 +34,8 @@ public class NinjaSudokuWindow extends JFrame {
 
 	private NinjaSudoku ninjaSudoku;
 
+	private int selectedLevel = 0;
+	
 	private boolean continueGame = false;
 
 	// ausgewähltes Feld
@@ -47,7 +49,7 @@ public class NinjaSudokuWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public NinjaSudokuWindow(SudokuListItems sudokuitems) {
+	public CreateNinjaSudokuWindow(SudokuListItems sudokuitems) {
 
 		ninjaSudoku = new NinjaSudoku();
 
@@ -113,73 +115,6 @@ public class NinjaSudokuWindow extends JFrame {
 			}
 		});
 		mnBearbeiten.add(mntmAuswahlLschen);
-
-		JMenu mnSolver = new JMenu("Solver");
-		menuBar.add(mnSolver);
-
-		JMenuItem mntmNchstenSchritt = new JMenuItem("Hinweis");
-		mntmNchstenSchritt.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				int[][] emptyFields = null;
-
-				emptyFields = ninjaSudoku.getEmptyFields();
-
-				if (emptyFields.length > 0) {
-
-					int idx = (int) (Math.random() * (emptyFields.length - 1));
-
-					// Achtung: gedreht
-					int x = emptyFields[idx][1];
-					int y = emptyFields[idx][0];
-
-					boolean solvable = false;
-
-					solvable = ninjaSudoku.solveSudokuNextStep(x, y);
-
-					if (!solvable) {
-						System.out.println("nicht lösbar");
-						fillField();
-						setBtnColors();
-					} else {
-						fillField();
-						setBtnColors();
-
-						lbl_hints.setText(ninjaSudoku.incrementCountHints() + "");
-					}
-				}
-			}
-		});
-		mnSolver.add(mntmNchstenSchritt);
-
-		JMenuItem mntmKomplettLsen = new JMenuItem("L\u00F6sen");
-		mntmKomplettLsen.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				boolean solvable = false;
-
-				solvable = ninjaSudoku.solveSudoku();
-
-				if (solvable) {
-					fillField();
-					setBtnColors();
-					lbl_hints.setText(ninjaSudoku.getCountHints() + "");
-
-				} else {
-					System.out.println("keine Lösung gefunden");
-				}
-			}
-		});
-		mnSolver.add(mntmKomplettLsen);
-
-		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
-		mntmPrfen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// checkComplete();
-			}
-		});
-		mnSolver.add(mntmPrfen);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
