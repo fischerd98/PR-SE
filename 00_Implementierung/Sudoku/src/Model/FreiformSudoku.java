@@ -141,9 +141,21 @@ public class FreiformSudoku extends Sudoku {
 	@Override
 	public boolean checkVal(int posX, int posY, int num) {
 
-		// nocht nicht implementiert
+		// Spalte
+				for (int i = 0; i < 9; i++) {
+					if (start[i][posY] == num) {
+						return false;
+					}
+				}
 
-		return false;
+				// Zeile
+				for (int i = 0; i < 9; i++) {
+					if (start[posX][i] == num) {
+						return false;
+					}
+				}
+
+				return check9SquareNumPossible(posX, posY, num);
 	}
 
 	@Override
