@@ -161,14 +161,29 @@ public class FreiformSudoku extends Sudoku {
 	@Override
 	public boolean checkComplete() {
 
-		// noch nicht implementiert
+		for (int x = 0; x < start.length; x++) {
+			for (int y = 0; y < start[x].length; y++) {
+				if (!checkVal(x, y, start[x][y])) {
+					return false;
+				}
+			}
+		}
 
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean numberIsValid(int x, int y, int value) {
-		// nocht nicht implementiert
-		return false;
+
+//		if (start[x][y] != 0) {// Falls ein Feld schon belegt ist
+//			return (false);
+//		}
+
+		if (!checkVal(x, y, value)) {
+			return false;
+		}
+
+		return (true);
+
 	}
 }

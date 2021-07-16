@@ -13,11 +13,11 @@ public class Model {
 		link = "Sudokus";
 		
 		if(form == 0)
-			link += "\\SimpleSudoku";
+			link += "\\SimpleSudoku_neu";
 		else if(form == 1)
-			link += "\\FreiformSudoku";
+			link += "\\FreiformSudoku_neu";
 		else
-			link += "\\NinjaSudoku";
+			link += "\\NinjaSudoku_neu";
 	
 		
 		if(level == 0)
