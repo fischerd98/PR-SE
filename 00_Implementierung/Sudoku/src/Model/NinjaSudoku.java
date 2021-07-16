@@ -19,7 +19,7 @@ public class NinjaSudoku extends Sudoku {
 
 		readSudoku(sli.getSudokuPath());
 	}
-	
+
 	// Konstruktor zu Testzwecken
 	public NinjaSudoku() {
 
@@ -68,7 +68,7 @@ public class NinjaSudoku extends Sudoku {
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 				{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 	}
-	
+
 	public boolean checkVal(int posX, int posY, int num) {
 
 		getFieldNums(posX, posY);
@@ -235,8 +235,74 @@ public class NinjaSudoku extends Sudoku {
 	}
 
 	public boolean checkComplete() {
-		// noch nicht implementiert
-		return false;
+
+		for (int x = 0; x < start.length; x++) {
+			for (int y = 0; y < start[x].length; y++) {
+
+				boolean fieldCorrect = false;
+				
+				if (x <= 5) {
+
+					if (y <= 8) {
+						fieldCorrect = true;
+					} else {
+						fieldCorrect = true;
+					}
+
+				} else if (x >= 6 && x <= 8) {
+
+					if (y <= 5) {
+						fieldCorrect = true;
+					} else if (y <= 8) {
+						fieldCorrect = true;
+					} else if (y <= 11) {
+						fieldCorrect = true;
+					} else if (y <= 14) {
+						fieldCorrect = true;
+					} else {
+						fieldCorrect = true;
+					}
+
+				} else if (x <= 11) {
+					fieldCorrect = true;
+				} else if (x >= 12 && x <= 14) {
+
+					if (x <= 5) {
+						fieldCorrect = true;
+					} else if (y <= 8) {
+						fieldCorrect = true;
+					} else if (y <= 11) {
+						fieldCorrect = true;
+					} else if (y <= 14) {
+						fieldCorrect = true;
+					} else {
+						fieldCorrect = true;
+					}
+				} else if (x >= 15) {
+					if (y <= 8) {
+						fieldCorrect = true;
+					} else {
+						fieldCorrect = true;
+					}
+				}
+				
+				if(fieldCorrect) {
+					if(!checkFieldComplete(x, y)) {
+						return false;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+	
+	public boolean checkFieldComplete(int x, int y) {
+		
+		if(start[x][y] == 0) {
+			return false;
+		}
+		return checkVal(x, y, start[x][y]);
 	}
 
 	public void readSudoku(String path) {

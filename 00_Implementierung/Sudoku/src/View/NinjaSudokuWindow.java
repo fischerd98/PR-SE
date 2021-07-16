@@ -176,7 +176,7 @@ public class NinjaSudokuWindow extends JFrame {
 		JMenuItem mntmPrfen = new JMenuItem("Pr\u00FCfen");
 		mntmPrfen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// checkComplete();
+				checkComplete();
 			}
 		});
 		mnSolver.add(mntmPrfen);
@@ -414,5 +414,17 @@ public class NinjaSudokuWindow extends JFrame {
 		} else {
 			field[posX][posY].setText(num + "");
 		}
+	}
+	
+	public void checkComplete() {
+
+		boolean state = false;
+
+		state = ninjaSudoku.checkComplete();
+		
+		if (state)
+			lblState.setText("Fertig!");
+		else
+			lblState.setText("Weitermachen!");
 	}
 }
