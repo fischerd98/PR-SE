@@ -273,12 +273,11 @@ public class NinjaSudokuWindow extends JFrame {
 
 					if ((startX == 6 && startY == 6) || (startX == 12 && startY == 6) || (startX == 6 && startY == 12)
 							|| (startX == 12 && startY == 12)) {
-						field[i][y].setBackground(Color.yellow);
+						field[i][y].setBackground(Color.DARK_GRAY);
 					} else if ((startX % 2 == 0 && startY % 2 != 0) || (startX % 2 != 0 && startY % 2 == 0)) {
 						field[i][y].setBackground(Color.WHITE);
 					} else {
-						field[i][y].setBackground(Color.LIGHT_GRAY);
-						
+						field[i][y].setBackground(Color.LIGHT_GRAY);						
 					}
 					field[i][y].setForeground(Color.BLACK);
 				}

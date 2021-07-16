@@ -81,7 +81,19 @@ public abstract class Sudoku {
 	
 	public void saveSudoku(String filename) {
 
-		try (CSVWriter writer = new CSVWriter(new FileWriter(filename));) {
+		String fn = filename;
+		
+		if(fn.contains("SimpleSudoku_neu")){
+			fn = fn.replace("SimpleSudoku_neu", "SimpleSudoku");
+		} else if(fn.contains("FreiformSudoku_neu")){
+			fn = fn.replace("FreiformSudoku_neu", "FreiformSudoku");
+		} else if(fn.contains("NinjaSudoku_neu")){
+			fn = fn.replace("NinjaSudoku_neu", "NinjaSudoku");
+		}
+		
+		System.out.println(fn);
+		
+		try (CSVWriter writer = new CSVWriter(new FileWriter(fn));) {
 
 			writer.writeAll(toStringArr(start));
 			writer.flush();

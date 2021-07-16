@@ -91,15 +91,19 @@ public class MainWindow {
 					break;
 				}
 
-				selectionChanged();
+				sudokuSelectionChanged();
 			}
 		};
 
 		JButton btnNewButton = new JButton("weiterspielen");
 		btnNewButton.addActionListener(new ActionListener() {
-
+			
 			public void actionPerformed(ActionEvent e) {
 
+				int idx = comboBox_sudokus.getSelectedIndex();
+				
+				sudokuSelectionChanged();
+				
 				if (comboBox_sudokus.getSelectedIndex() != -1) {
 					if (selectedForm == 0) {
 						SudokuWindow w = new SudokuWindow((SudokuListItems) comboBox_sudokus.getSelectedItem(), true,
@@ -125,6 +129,23 @@ public class MainWindow {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				int numSudokus = comboBox_sudokus.getItemCount();
+
+				int randomNum = (int) (Math.random() * numSudokus);
+
+				SudokuListItems randomListItem = (SudokuListItems) comboBox_sudokus.getItemAt(randomNum);
+
+				if (selectedForm == 0) {
+					SudokuWindow w = new SudokuWindow(randomListItem, true, false);
+					w.setVisible(true);
+				} else if (selectedForm == 1) {
+
+					SudokuWindow w = new SudokuWindow(randomListItem, false, true);
+					w.setVisible(true);
+				} else if (selectedForm == 2) {
+					NinjaSudokuWindow w = new NinjaSudokuWindow(randomListItem);
+					w.setVisible(true);
+				}
 			}
 		});
 		btnNewButton_1.setBounds(30, 305, 309, 23);
@@ -133,6 +154,33 @@ public class MainWindow {
 		JButton btnNewButton_2 = new JButton("neu starten");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				SudokuListItems sli = (SudokuListItems) comboBox_sudokus.getSelectedItem();
+
+				if (comboBox_sudokus.getSelectedIndex() != -1) {
+					if (selectedForm == 0) {
+						if(!sli.getSudokuPath().contains("neu")) {
+							sli.setSudokuPath(sli.getSudokuPath().replace("SimpleSudoku", "SimpleSudoku_neu"));
+						}						
+						SudokuWindow w = new SudokuWindow(sli, true,
+								false);
+						w.setVisible(true);
+					} else if (selectedForm == 1) {
+						if(!sli.getSudokuPath().contains("neu")) {
+							sli.setSudokuPath(sli.getSudokuPath().replace("FreiformSudoku", "FreiformSudoku_neu"));
+						}										
+						SudokuWindow w = new SudokuWindow(sli, false,
+								true);
+						w.setVisible(true);
+					} else if (selectedForm == 2) {
+						if(!sli.getSudokuPath().contains("neu")) {
+							sli.setSudokuPath(sli.getSudokuPath().replace("NinjaSudoku", "NinjaSudoku_neu"));
+						}									
+						NinjaSudokuWindow w = new NinjaSudokuWindow(
+								sli);
+						w.setVisible(true);
+					}
+				}
 			}
 		});
 		btnNewButton_2.setBounds(191, 237, 148, 23);
@@ -149,8 +197,7 @@ public class MainWindow {
 
 				if (comboBox_sudokus.getSelectedIndex() != -1) {
 					if (selectedForm == 0) {
-						CreateSudokuWin w = new CreateSudokuWin(true,
-								false);
+						CreateSudokuWin w = new CreateSudokuWin(true, false);
 						w.setVisible(true);
 					} else if (selectedForm == 1) {
 
@@ -158,8 +205,7 @@ public class MainWindow {
 								true);
 						w.setVisible(true);
 					} else if (selectedForm == 2) {
-						CreateNinjaSudokuWin w = new CreateNinjaSudokuWin(
-								null);
+						CreateNinjaSudokuWin w = new CreateNinjaSudokuWin(null);
 						w.setVisible(true);
 					}
 				}
@@ -236,10 +282,10 @@ public class MainWindow {
 		lblNewLabel_3.setBounds(127, 179, 174, 14);
 		frame.getContentPane().add(lblNewLabel_3);
 
-		selectionChanged();
+		sudokuSelectionChanged();
 	}
 
-	public void selectionChanged() {
+	public void sudokuSelectionChanged() {
 
 		comboBox_sudokus.removeAllItems();
 
