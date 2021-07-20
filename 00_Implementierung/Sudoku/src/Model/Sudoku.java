@@ -76,7 +76,19 @@ public abstract class Sudoku {
 	}
 
 	public void saveNewSudoku(String name) {
-		saveSudoku(name);
+		String fn = name;
+		
+		
+		System.out.println(fn);
+		
+		try (CSVWriter writer = new CSVWriter(new FileWriter(fn));) {
+
+			writer.writeAll(toStringArr(start));
+			writer.flush();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void saveSudoku(String filename) {

@@ -91,7 +91,7 @@ public class CreateNinjaSudokuWin extends JFrame {
 						schwierigkeit = "Profi";
 					}
 
-					String link = "Sudokus\\NinjaSudoku\\" + schwierigkeit + "\\" + name + ".csv";
+					String link = "Sudokus\\NinjaSudoku_neu\\" + schwierigkeit + "\\" + name + ".csv";
 					
 					ninjaSudoku.saveNewSudoku(link);
 				}

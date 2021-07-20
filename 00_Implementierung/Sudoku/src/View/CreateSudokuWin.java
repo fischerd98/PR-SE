@@ -100,7 +100,7 @@ public class CreateSudokuWin extends JFrame {
 
 					if (ss != null) {
 
-						String link = "Sudokus\\SimpleSudoku\\" + schwierigkeit + "\\" + name + ".csv";
+						String link = "Sudokus\\SimpleSudoku_neu\\" + schwierigkeit + "\\" + name + ".csv";
 
 						ss.saveNewSudoku(link);
 					} else {

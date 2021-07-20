@@ -102,7 +102,6 @@ public class MainWindow {
 
 				int idx = comboBox_sudokus.getSelectedIndex();
 				
-				sudokuSelectionChanged();
 				
 				if (comboBox_sudokus.getSelectedIndex() != -1) {
 					if (selectedForm == 0) {
